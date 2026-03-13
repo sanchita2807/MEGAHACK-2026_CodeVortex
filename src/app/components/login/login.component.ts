@@ -18,6 +18,7 @@ export class LoginComponent {
   email = '';
   password = '';
   errorMessage = '';
+  loading = false;
 
   constructor(
     private router: Router,
@@ -27,24 +28,42 @@ export class LoginComponent {
 
   onSubmit() {
     this.errorMessage = '';
+    this.loading = true;
+    
     const loginData = {
       email: this.email,
       password: this.password
     };
 
-    this.http.post(`${environment.apiUrl}/auth/login`, loginData).subscribe({
+    this.http.post(`${environment.apiUrl}/auth/login-user`, loginData).subscribe({
       next: (response: any) => {
-        console.log('Login successful:', response);
-        this.toastService.success('Login successful! Welcome back.');
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('userEmail', this.email);
-        if (response.name) localStorage.setItem('userName', response.name);
-        if (response.shopName) localStorage.setItem('shopName', response.shopName);
-        this.router.navigate(['/home']);
+        this.loading = false;
+        console.log('User login response:', response);
+        
+        if (response.success) {
+          this.toastService.success('Login successful! Welcome back.');
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('userEmail', this.email);
+          localStorage.setItem('userType', '0');
+          localStorage.setItem('userName', response.name || '');
+          localStorage.setItem('shopName', response.shopName || '');
+          this.router.navigate(['/home']);
+        } else {
+          this.errorMessage = response.message || 'Login failed';
+          this.toastService.error(this.errorMessage);
+        }
       },
       error: (error) => {
+        this.loading = false;
         console.error('Login error:', error);
-        this.errorMessage = error.error?.message || 'Invalid email or password';
+        
+        if (error.status === 403) {
+          this.errorMessage = 'Access denied. Only regular users can login here.';
+        } else if (error.status === 400) {
+          this.errorMessage = error.error?.message || 'Invalid email or password';
+        } else {
+          this.errorMessage = 'Login failed. Please try again.';
+        }
         this.toastService.error(this.errorMessage);
       }
     });
