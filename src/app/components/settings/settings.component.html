@@ -1,7 +1,7 @@
 <header>
   <div class="header-left">
-    <div class="header-title">Settings</div>
-    <div class="header-subtitle">Manage your app preferences</div>
+    <div class="header-title">{{ langService.translate('settings') }}</div>
+    <div class="header-subtitle">{{ langService.translate('managePreferences') }}</div>
   </div>
 </header>
 
@@ -17,21 +17,21 @@
       <div class="profile-name">{{ userName }}</div>
       <div class="profile-role">{{ shopName }}</div>
     </div>
-    <div class="edit-btn">Edit</div>
+    <div class="edit-btn" (click)="openEditModal()">{{ langService.translate('edit') }}</div>
   </div>
 
   <div class="settings-group">
-    <div class="settings-group-title">Preferences</div>
+    <div class="settings-group-title">{{ langService.translate('preferences') }}</div>
     <div class="settings-card">
-      <div class="settings-item">
+      <div class="settings-item" (click)="openLanguageModal()">
         <div class="settings-item-left">
           <div class="settings-icon blue">
             <iconify-icon icon="lucide:languages" style="font-size: 18px"></iconify-icon>
           </div>
-          <div class="settings-label">Language</div>
+          <div class="settings-label">{{ langService.translate('language') }}</div>
         </div>
         <div class="settings-value">
-          English
+          {{ getSelectedLanguages() }}
           <iconify-icon icon="lucide:chevron-right" style="font-size: 16px"></iconify-icon>
         </div>
       </div>
@@ -40,7 +40,7 @@
           <div class="settings-icon orange">
             <iconify-icon icon="lucide:bell" style="font-size: 18px"></iconify-icon>
           </div>
-          <div class="settings-label">Notifications</div>
+          <div class="settings-label">{{ langService.translate('notifications') }}</div>
         </div>
         <div class="settings-value">
           <div class="switch"></div>
@@ -51,10 +51,10 @@
           <div class="settings-icon">
             <iconify-icon icon="lucide:alert-triangle" style="font-size: 18px"></iconify-icon>
           </div>
-          <div class="settings-label">Low Stock Threshold</div>
+          <div class="settings-label">{{ langService.translate('lowStockThreshold') }}</div>
         </div>
         <div class="settings-value">
-          5 items
+          5 {{ langService.translate('items') }}
           <iconify-icon icon="lucide:chevron-right" style="font-size: 16px"></iconify-icon>
         </div>
       </div>
@@ -62,14 +62,14 @@
   </div>
 
   <div class="settings-group">
-    <div class="settings-group-title">Integrations &amp; Export</div>
+    <div class="settings-group-title">{{ langService.translate('integrationsExport') }}</div>
     <div class="settings-card">
       <div class="settings-item">
         <div class="settings-item-left">
           <div class="settings-icon green">
             <iconify-icon icon="lucide:file-spreadsheet" style="font-size: 18px"></iconify-icon>
           </div>
-          <div class="settings-label">Tally Export Settings</div>
+          <div class="settings-label">{{ langService.translate('tallyExport') }}</div>
         </div>
         <div class="settings-value">
           <iconify-icon icon="lucide:chevron-right" style="font-size: 16px"></iconify-icon>
@@ -80,7 +80,7 @@
           <div class="settings-icon green">
             <iconify-icon icon="lucide:file-down" style="font-size: 18px"></iconify-icon>
           </div>
-          <div class="settings-label">Auto-Backup to Cloud</div>
+          <div class="settings-label">{{ langService.translate('autoBackup') }}</div>
         </div>
         <div class="settings-value">
           <div class="switch"></div>
@@ -90,14 +90,14 @@
   </div>
 
   <div class="settings-group">
-    <div class="settings-group-title">Other</div>
+    <div class="settings-group-title">{{ langService.translate('other') }}</div>
     <div class="settings-card">
-      <div class="settings-item">
+      <div class="settings-item" (click)="openHelpModal()">
         <div class="settings-item-left">
           <div class="settings-icon">
             <iconify-icon icon="lucide:help-circle" style="font-size: 18px"></iconify-icon>
           </div>
-          <div class="settings-label">Help &amp; Support</div>
+          <div class="settings-label">{{ langService.translate('helpSupport') }}</div>
         </div>
       </div>
       <div class="settings-item" (click)="logout()" style="cursor: pointer;">
@@ -106,7 +106,7 @@
             <iconify-icon icon="lucide:log-out" style="font-size: 18px"></iconify-icon>
           </div>
           <div class="settings-label" style="color: var(--destructive, #ef4444)">
-            Log Out
+            {{ langService.translate('logOut') }}
           </div>
         </div>
       </div>
@@ -114,21 +114,127 @@
   </div>
 </main>
 
+<!-- Edit Profile Modal -->
+<div class="modal" *ngIf="showEditModal" (click)="closeEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ langService.translate('editProfile') }}</h3>
+      <iconify-icon icon="lucide:x" (click)="closeEditModal()" style="cursor: pointer; font-size: 20px"></iconify-icon>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>{{ langService.translate('fullName') }}</label>
+        <input type="text" [(ngModel)]="editForm.name" [placeholder]="langService.translate('enterFullName')" />
+      </div>
+      <div class="form-group">
+        <label>{{ langService.translate('shopName') }}</label>
+        <input type="text" [(ngModel)]="editForm.shopName" [placeholder]="langService.translate('enterShopName')" />
+      </div>
+      <div class="form-group">
+        <label>{{ langService.translate('businessType') }}</label>
+        <input type="text" [(ngModel)]="editForm.businessType" [placeholder]="langService.translate('enterBusinessType')" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeEditModal()">{{ langService.translate('cancel') }}</button>
+      <button class="btn-primary" (click)="saveProfile()">{{ langService.translate('save') }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Language Selection Modal -->
+<div class="modal" *ngIf="showLanguageModal" (click)="closeLanguageModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ langService.translate('selectLanguage') }}</h3>
+      <iconify-icon icon="lucide:x" (click)="closeLanguageModal()" style="cursor: pointer; font-size: 20px"></iconify-icon>
+    </div>
+    <div class="modal-body">
+      <p class="modal-subtitle">{{ langService.translate('chooseLanguage') }}</p>
+      <div class="language-list">
+        <div class="language-item" *ngFor="let lang of availableLanguages" (click)="toggleLanguage(lang)">
+          <span>{{ lang.name }}</span>
+          <div class="radio" [class.checked]="lang.selected">
+            <div class="radio-dot" *ngIf="lang.selected"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeLanguageModal()">{{ langService.translate('cancel') }}</button>
+      <button class="btn-primary" (click)="saveLanguages()">{{ langService.translate('save') }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Help & Support Modal -->
+<div class="modal" *ngIf="showHelpModal" (click)="closeHelpModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ langService.translate('helpSupport') }}</h3>
+      <iconify-icon icon="lucide:x" (click)="closeHelpModal()" style="cursor: pointer; font-size: 20px"></iconify-icon>
+    </div>
+    <div class="modal-body">
+      <div class="help-section">
+        <div class="help-item">
+          <div class="help-icon">
+            <iconify-icon icon="lucide:mail" style="font-size: 20px"></iconify-icon>
+          </div>
+          <div class="help-content">
+            <div class="help-title">{{ langService.translate('emailSupport') }}</div>
+            <div class="help-text">support@smartinvoice.com</div>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-icon">
+            <iconify-icon icon="lucide:phone" style="font-size: 20px"></iconify-icon>
+          </div>
+          <div class="help-content">
+            <div class="help-title">{{ langService.translate('phoneSupport') }}</div>
+            <div class="help-text">+91 1800-123-4567</div>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-icon">
+            <iconify-icon icon="lucide:message-circle" style="font-size: 20px"></iconify-icon>
+          </div>
+          <div class="help-content">
+            <div class="help-title">{{ langService.translate('whatsapp') }}</div>
+            <div class="help-text">+91 98765-43210</div>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-icon">
+            <iconify-icon icon="lucide:book-open" style="font-size: 20px"></iconify-icon>
+          </div>
+          <div class="help-content">
+            <div class="help-title">{{ langService.translate('documentation') }}</div>
+            <div class="help-text">{{ langService.translate('visitHelpCenter') }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" (click)="closeHelpModal()">{{ langService.translate('close') }}</button>
+    </div>
+  </div>
+</div>
+
 <nav>
   <a class="nav-item" routerLink="/home" routerLinkActive="active">
     <iconify-icon icon="lucide:layout-dashboard" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Home</div>
+    <div class="nav-label">{{ langService.translate('home') }}</div>
   </a>
   <a class="nav-item" routerLink="/inventory" routerLinkActive="active">
     <iconify-icon icon="lucide:package-search" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Inventory</div>
+    <div class="nav-label">{{ langService.translate('inventory') }}</div>
   </a>
   <a class="nav-item" routerLink="/reports" routerLinkActive="active">
     <iconify-icon icon="lucide:file-text" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Reports</div>
+    <div class="nav-label">{{ langService.translate('reports') }}</div>
   </a>
   <a class="nav-item" routerLink="/settings" routerLinkActive="active">
     <iconify-icon icon="lucide:settings" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Settings</div>
+    <div class="nav-label">{{ langService.translate('settings') }}</div>
   </a>
 </nav>

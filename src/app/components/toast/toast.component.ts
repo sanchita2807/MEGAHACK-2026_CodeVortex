@@ -20,12 +20,28 @@ export class ToastComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.subscription = this.toastService.toasts$.subscribe(toast => {
             this.toasts.push(toast);
-            setTimeout(() => this.remove(toast.id), 5000);
+            if (toast.type !== 'confirm') {
+                setTimeout(() => this.remove(toast.id), 5000);
+            }
         });
     }
 
     remove(id: number) {
         this.toasts = this.toasts.filter(t => t.id !== id);
+    }
+
+    handleConfirm(toast: Toast) {
+        if (toast.onConfirm) {
+            toast.onConfirm();
+        }
+        this.remove(toast.id);
+    }
+
+    handleCancel(toast: Toast) {
+        if (toast.onCancel) {
+            toast.onCancel();
+        }
+        this.remove(toast.id);
     }
 
     ngOnDestroy() {
