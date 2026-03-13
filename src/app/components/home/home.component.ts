@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { DashboardService, DashboardStats, Product, Invoice } from '../../services/dashboard.service';
 import { ToastService } from '../../services/toast.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -17,11 +18,18 @@ export class HomeComponent implements OnInit {
   lowStockProducts: Product[] = [];
   recentInvoices: Invoice[] = [];
   shopName = 'My Shop';
+  showNotifications = false;
+  showLogoutConfirm = false;
+  notifications = [
+    { id: 1, title: 'Low Stock Alert', message: 'Product A is running low', time: '2 min ago', read: false },
+    { id: 2, title: 'Invoice Scanned', message: 'New invoice processed successfully', time: '1 hour ago', read: true }
+  ];
 
   constructor(
     private dashboardService: DashboardService,
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -62,5 +70,27 @@ export class HomeComponent implements OnInit {
 
   navigateTo(route: string) {
     this.router.navigate([route]);
+  }
+
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  logout() {
+    this.showLogoutConfirm = true;
+  }
+
+  confirmLogout() {
+    this.showLogoutConfirm = false;
+    this.toastService.success('Logged out successfully');
+    this.authService.logout();
+  }
+
+  cancelLogout() {
+    this.showLogoutConfirm = false;
+  }
+
+  get unreadCount() {
+    return this.notifications.filter(n => !n.read).length;
   }
 }
