@@ -19,11 +19,11 @@
       </div>
     </div>
     <div class="export-actions">
-      <div class="btn-export btn-excel">
+      <div class="btn-export btn-excel" (click)="exportToExcel()">
         <iconify-icon icon="lucide:file-spreadsheet" style="font-size: 16px"></iconify-icon>
         Excel Format
       </div>
-      <div class="btn-export btn-tally">
+      <div class="btn-export btn-tally" (click)="syncWithTally()">
         <iconify-icon icon="lucify:database" style="font-size: 16px"></iconify-icon>
         Tally Export
       </div>
@@ -33,18 +33,18 @@
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-label">Total Inventory Value</div>
-      <div class="stat-value">₹ 1,42,500</div>
+      <div class="stat-value">₹ {{ stats.totalInventoryValue.toFixed(0) | number }}</div>
       <div class="stat-trend trend-up">
         <iconify-icon icon="lucide:trending-up" style="font-size: 14px"></iconify-icon>
-        +5.2% vs last month
+        {{ stats.totalItems }} items
       </div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Invoices Scanned</div>
-      <div class="stat-value">48</div>
+      <div class="stat-value">{{ stats.invoicesScanned }}</div>
       <div class="stat-trend trend-up">
         <iconify-icon icon="lucide:trending-up" style="font-size: 14px"></iconify-icon>
-        +12 this week
+        {{ stats.lowStockAlerts }} low stock alerts
       </div>
     </div>
   </div>

@@ -17,7 +17,7 @@
     <div style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: var(--muted-foreground, #71717a);">
       <iconify-icon icon="lucide:search" style="font-size: 20px"></iconify-icon>
     </div>
-    <input type="text" class="search-input" placeholder="Search items, SKU, or categories...">
+    <input type="text" class="search-input" placeholder="Search items, SKU, or categories..." (input)="onSearch($event)">
     <div style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: var(--muted-foreground, #71717a); cursor: pointer;">
       <iconify-icon icon="lucide:barcode" style="font-size: 20px"></iconify-icon>
     </div>
@@ -25,106 +25,36 @@
 
   <div class="tabs-container">
     <div class="tab active">All Items</div>
-    <div class="tab inactive">Low Stock (12)</div>
-    <div class="tab inactive">Staples</div>
-    <div class="tab inactive">Snacks</div>
-    <div class="tab inactive">Beverages</div>
+    <div class="tab inactive">Low Stock ({{ getLowStockCount() }})</div>
   </div>
 
   <div class="inventory-header">
     <div class="inventory-title">All Items</div>
-    <div class="inventory-count">1,248 items</div>
+    <div class="inventory-count">{{ filteredProducts.length }} items</div>
   </div>
 
   <div class="inventory-list">
-    <div class="inventory-item">
+    <div class="inventory-item" *ngFor="let product of filteredProducts">
       <div class="item-img">
-        <iconify-icon icon="lucide:wheat" style="font-size: 24px"></iconify-icon>
+        <iconify-icon icon="lucide:package" style="font-size: 24px"></iconify-icon>
       </div>
       <div class="item-info">
-        <div class="item-name">Aashirvaad Atta 5kg</div>
+        <div class="item-name">{{ product.name }}</div>
         <div class="item-meta">
-          <span>SKU: ATT-001</span>
+          <span>ID: {{ product.id }}</span>
           <span>•</span>
-          <span>Staples</span>
+          <span>Min: {{ product.threshold }}</span>
         </div>
       </div>
       <div class="item-status">
-        <div class="item-price">₹210.00</div>
-        <div class="stock-badge low">2 in stock</div>
+        <div class="item-price">₹{{ product.price.toFixed(2) }}</div>
+        <div class="stock-badge" [class.low]="isLowStock(product)">{{ product.stockLevel }} in stock</div>
       </div>
     </div>
 
-    <div class="inventory-item">
-      <div class="item-img">
-        <iconify-icon icon="lucide:layout-dashboard" style="font-size: 24px"></iconify-icon>
-      </div>
-      <div class="item-info">
-        <div class="item-name">Tata Salt 1kg</div>
-        <div class="item-meta">
-          <span>SKU: SLT-042</span>
-          <span>•</span>
-          <span>Staples</span>
-        </div>
-      </div>
-      <div class="item-status">
-        <div class="item-price">₹24.00</div>
-        <div class="stock-badge low">5 in stock</div>
-      </div>
-    </div>
-
-    <div class="inventory-item">
-      <div class="item-img">
-        <iconify-icon icon="lucide:cookie" style="font-size: 24px"></iconify-icon>
-      </div>
-      <div class="item-info">
-        <div class="item-name">Britannia Good Day 250g</div>
-        <div class="item-meta">
-          <span>SKU: BGD-102</span>
-          <span>•</span>
-          <span>Snacks</span>
-        </div>
-      </div>
-      <div class="item-status">
-        <div class="item-price">₹45.00</div>
-        <div class="stock-badge">48 in stock</div>
-      </div>
-    </div>
-
-    <div class="inventory-item">
-      <div class="item-img">
-        <iconify-icon icon="lucide:droplets" style="font-size: 24px"></iconify-icon>
-      </div>
-      <div class="item-info">
-        <div class="item-name">Fortune Sunflower Oil 1L</div>
-        <div class="item-meta">
-          <span>SKU: OIL-088</span>
-          <span>•</span>
-          <span>Staples</span>
-        </div>
-      </div>
-      <div class="item-status">
-        <div class="item-price">₹145.00</div>
-        <div class="stock-badge">24 in stock</div>
-      </div>
-    </div>
-
-    <div class="inventory-item">
-      <div class="item-img">
-        <iconify-icon icon="lucide:coffee" style="font-size: 24px"></iconify-icon>
-      </div>
-      <div class="item-info">
-        <div class="item-name">Nescafe Classic 50g</div>
-        <div class="item-meta">
-          <span>SKU: COF-015</span>
-          <span>•</span>
-          <span>Beverages</span>
-        </div>
-      </div>
-      <div class="item-status">
-        <div class="item-price">₹160.00</div>
-        <div class="stock-badge">18 in stock</div>
-      </div>
+    <div *ngIf="filteredProducts.length === 0" style="text-align: center; padding: 40px; color: #71717a;">
+      <iconify-icon icon="lucide:package-x" style="font-size: 48px; margin-bottom: 16px;"></iconify-icon>
+      <p>No products found</p>
     </div>
   </div>
 </main>

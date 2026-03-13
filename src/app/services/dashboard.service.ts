@@ -6,6 +6,8 @@ import { environment } from '../../environments/environment';
 export interface DashboardStats {
     totalItems: number;
     lowStockAlerts: number;
+    invoicesScanned: number;
+    totalInventoryValue: number;
 }
 
 export interface Product {
@@ -16,13 +18,13 @@ export interface Product {
     price: number;
 }
 
-export interface Activity {
-    id: number;
-    title: string;
-    subtitle: string;
-    type: 'success' | 'info' | 'warning' | 'danger';
+export interface Invoice {
+    id?: number;
+    vendor: string;
+    date: string;
     status: string;
-    timestamp: string;
+    items: number;
+    amount: string;
 }
 
 @Injectable({
@@ -41,7 +43,15 @@ export class DashboardService {
         return this.http.get<Product[]>(`${this.apiUrl}/low-stock`);
     }
 
-    getRecentActivities(): Observable<Activity[]> {
-        return this.http.get<Activity[]>(`${this.apiUrl}/activities`);
+    getRecentInvoices(): Observable<Invoice[]> {
+        return this.http.get<Invoice[]>(`${this.apiUrl}/invoices`);
+    }
+
+    exportToExcel(): Observable<Blob> {
+        return this.http.get(`${this.apiUrl}/export/excel`, { responseType: 'blob' });
+    }
+
+    syncWithTally(): Observable<any> {
+        return this.http.post(`${this.apiUrl}/sync/tally`, {});
     }
 }

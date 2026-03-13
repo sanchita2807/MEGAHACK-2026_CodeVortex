@@ -3,14 +3,14 @@
     <header class="top-bar">
         <div class="user-info">
             <h1 class="app-logo">SmartStock</h1>
-            <p class="user-subtitle">Ramesh Provisions</p>
+            <p class="user-subtitle">Dashboard</p>
         </div>
         <div class="header-actions">
-            <button class="icon-btn">
-                <iconify-icon icon="lucide:languages" style="font-size: 20px;"></iconify-icon>
+            <button class="icon-btn" (click)="exportToExcel()" title="Export to Excel">
+                <iconify-icon icon="lucide:file-spreadsheet" style="font-size: 20px;"></iconify-icon>
             </button>
-            <button class="icon-btn">
-                <iconify-icon icon="lucide:bell" style="font-size: 20px;"></iconify-icon>
+            <button class="icon-btn" (click)="syncWithTally()" title="Sync with Tally">
+                <iconify-icon icon="lucide:database" style="font-size: 20px;"></iconify-icon>
             </button>
         </div>
     </header>
@@ -34,14 +34,14 @@
                 <div class="stat-icon info">
                     <iconify-icon icon="lucide:box" style="font-size: 20px;"></iconify-icon>
                 </div>
-                <div class="stat-value">{{ stats.totalItems | number }}</div>
+                <div class="stat-value">{{ stats.totalItems }}</div>
                 <div class="stat-label">Total Items</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon danger">
                     <iconify-icon icon="lucide:alert-triangle" style="font-size: 20px;"></iconify-icon>
                 </div>
-                <div class="stat-value">{{ stats.lowStockAlerts | number }}</div>
+                <div class="stat-value">{{ stats.lowStockAlerts }}</div>
                 <div class="stat-label">Low Stock Alerts</div>
             </div>
         </section>
@@ -64,23 +64,20 @@
         </section>
 
         <!-- Recent Activity Section -->
-        <section class="section-container" *ngIf="recentActivities.length > 0">
+        <section class="section-container" *ngIf="recentInvoices.length > 0">
             <div class="section-header">
-                <h3 class="section-title">Recent Activity</h3>
+                <h3 class="section-title">Recent Invoices</h3>
             </div>
             <div class="activity-list">
-                <div class="activity-item" *ngFor="let activity of recentActivities">
-                    <div class="activity-icon-box" [ngClass]="activity.type">
-                        <iconify-icon
-                            [icon]="activity.type === 'success' ? 'lucide:check-circle' : (activity.type === 'info' ? 'lucide:file-text' : 'lucide:alert-circle')"
-                            style="font-size: 20px;">
-                        </iconify-icon>
+                <div class="activity-item" *ngFor="let invoice of recentInvoices">
+                    <div class="activity-icon-box success">
+                        <iconify-icon icon="lucide:file-text" style="font-size: 20px;"></iconify-icon>
                     </div>
                     <div class="item-info">
-                        <h4 class="item-name">{{ activity.title }}</h4>
-                        <p class="item-status">{{ activity.subtitle }}</p>
+                        <h4 class="item-name">{{ invoice.vendor }}</h4>
+                        <p class="item-status">{{ invoice.items }} items • ₹{{ invoice.amount }}</p>
                     </div>
-                    <span class="status-badge" [ngClass]="activity.type">{{ activity.status }}</span>
+                    <span class="status-badge success">{{ invoice.status }}</span>
                 </div>
             </div>
         </section>
@@ -88,19 +85,19 @@
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <button class="nav-item active">
+        <button class="nav-item active" (click)="navigateTo('/home')">
             <iconify-icon icon="lucide:layout-grid" style="font-size: 24px;"></iconify-icon>
             <span>Home</span>
         </button>
-        <button class="nav-item">
+        <button class="nav-item" (click)="navigateTo('/inventory')">
             <iconify-icon icon="lucide:package-search" style="font-size: 24px;"></iconify-icon>
             <span>Inventory</span>
         </button>
-        <button class="nav-item">
+        <button class="nav-item" (click)="navigateTo('/reports')">
             <iconify-icon icon="lucide:file-bar-chart" style="font-size: 24px;"></iconify-icon>
             <span>Reports</span>
         </button>
-        <button class="nav-item">
+        <button class="nav-item" (click)="navigateTo('/settings')">
             <iconify-icon icon="lucide:settings" style="font-size: 24px;"></iconify-icon>
             <span>Settings</span>
         </button>

@@ -37,7 +37,10 @@ export class LoginComponent {
         console.log('Login successful:', response);
         this.toastService.success('Login successful! Welcome back.');
         localStorage.setItem('token', response.token);
-        this.router.navigate(['/dashboard']);
+        localStorage.setItem('userEmail', this.email);
+        if (response.name) localStorage.setItem('userName', response.name);
+        if (response.shopName) localStorage.setItem('shopName', response.shopName);
+        this.router.navigate(['/home']);
       },
       error: (error) => {
         console.error('Login error:', error);

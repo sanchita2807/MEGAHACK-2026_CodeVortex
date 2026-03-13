@@ -56,9 +56,16 @@ export class RegistrationComponent {
         this.successMessage = response.message || 'Registration successful!';
         this.toastService.success(this.successMessage);
 
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('userEmail', this.email);
+          localStorage.setItem('userName', this.name);
+          localStorage.setItem('shopName', this.shopName);
+        }
+
         setTimeout(() => {
           this.router.navigate(['/login']);
-        }, 3000);
+        }, 2000);
       },
       error: (error) => {
         console.error('Registration error:', error);
