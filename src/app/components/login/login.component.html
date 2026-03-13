@@ -1,0 +1,58 @@
+<div class="export-wrapper">
+  <div class="mobile-container">
+    <!-- Header Section -->
+    <div class="auth-header">
+      <div class="logo-container">
+        <div class="logo-circle">
+          <iconify-icon icon="lucide:box" style="font-size: 32px; color: white"></iconify-icon>
+        </div>
+      </div>
+      <h1 class="auth-title">Welcome Back</h1>
+      <p class="auth-subtitle">
+        Enter your credentials to access your SmartSync dashboard
+      </p>
+    </div>
+
+    <!-- Login Form -->
+    <form class="form-container" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="input-group">
+        <div class="input-field">
+          <div class="field-icon">
+            <iconify-icon icon="lucide:mail" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+          <input type="email" id="email" name="email" [(ngModel)]="email" required email placeholder="Email Address"
+            class="input-control" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <div class="field-icon">
+            <iconify-icon icon="lucide:lock" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+          <input type="password" id="password" name="password" [(ngModel)]="password" required placeholder="Password"
+            class="input-control" />
+          <div class="field-icon toggle-password">
+            <iconify-icon icon="lucide:eye-off" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="forgot-password" (click)="navigateTo('forgot-password')">
+        Forgot Password?
+      </div>
+
+      <button type="submit" class="primary-btn" [disabled]="!loginForm.form.valid">
+        Login
+      </button>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="auth-footer">
+        <p>Don't have an account? <a (click)="navigateTo('register')" class="auth-link">Register</a></p>
+      </div>
+    </form>
+  </div>
+</div>

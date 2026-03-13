@@ -1,0 +1,13 @@
+<div class="toast-container">
+    <div *ngFor="let toast of toasts" class="toast" [ngClass]="toast.type">
+        <div class="toast-icon">
+            <iconify-icon [icon]="toast.type === 'success' ? 'lucide:check-circle' : 'lucide:alert-circle'"
+                style="font-size: 20px;">
+            </iconify-icon>
+        </div>
+        <div class="toast-message">{{ toast.message }}</div>
+        <button class="toast-close" (click)="remove(toast.id)">
+            <iconify-icon icon="lucide:x" style="font-size: 16px;"></iconify-icon>
+        </button>
+    </div>
+</div>

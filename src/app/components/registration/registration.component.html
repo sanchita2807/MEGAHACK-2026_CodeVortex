@@ -1,0 +1,119 @@
+<div class="export-wrapper">
+  <div class="mobile-container scrollable">
+    <!-- Header Section -->
+    <div class="auth-header">
+      <div class="logo-container">
+        <div class="logo-circle">
+          <iconify-icon icon="lucide:box" style="font-size: 32px; color: white"></iconify-icon>
+        </div>
+      </div>
+      <h1 class="auth-title">Create Account</h1>
+      <p class="auth-subtitle">
+        Join SmartSync to manage your shop and invoices
+      </p>
+    </div>
+
+    <!-- Register Form -->
+    <form class="form-container" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div class="input-group">
+        <div class="input-field">
+          <div class="field-icon">
+            <iconify-icon icon="lucide:user" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+          <input type="text" id="name" name="name" [(ngModel)]="name" required placeholder="Full Name"
+            class="input-control" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <div class="field-icon">
+            <iconify-icon icon="lucide:smartphone"
+              style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+          <input type="tel" id="phone" name="phone" [(ngModel)]="phone" required placeholder="Phone Number"
+            class="input-control" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <div class="field-icon">
+            <iconify-icon icon="lucide:mail" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+          <input type="email" id="email" name="email" [(ngModel)]="email" required email placeholder="Email Address"
+            class="input-control" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <div class="field-icon">
+            <iconify-icon icon="lucide:store" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+          <input type="text" id="shopName" name="shopName" [(ngModel)]="shopName" required placeholder="Shop Name"
+            class="input-control" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <div class="field-icon">
+            <iconify-icon icon="lucide:briefcase"
+              style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+          <select id="businessType" name="businessType" [(ngModel)]="businessType" required
+            class="input-control select-control">
+            <option value="" disabled selected>Business Type</option>
+            <option value="retail">Retail</option>
+            <option value="wholesale">Wholesale</option>
+            <option value="service">Service</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <div class="field-icon">
+            <iconify-icon icon="lucide:lock" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+          <input type="password" id="password" name="password" [(ngModel)]="password" required placeholder="Password"
+            class="input-control" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <div class="field-icon">
+            <iconify-icon icon="lucide:shield-check"
+              style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
+          </div>
+          <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword" required
+            placeholder="Confirm Password" class="input-control" />
+        </div>
+      </div>
+
+      <button type="submit" class="primary-btn" [disabled]="!registerForm.form.valid || password !== confirmPassword">
+        Register
+      </button>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+      <div class="error-message" *ngIf="confirmPassword && password !== confirmPassword">
+        Passwords do not match
+      </div>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a (click)="navigateTo('login')" class="auth-link">Login</a></p>
+      </div>
+    </form>
+
+    <div class="footer-spacing"></div>
+  </div>
+</div>
