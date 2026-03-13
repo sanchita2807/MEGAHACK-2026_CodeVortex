@@ -1,13 +1,15 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastComponent } from './components/toast/toast.component';
 import { ToastService } from './services/toast.service';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [RouterOutlet, ToastComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class App implements OnInit {
   protected readonly title = signal('SmartInvoiceFrontend');

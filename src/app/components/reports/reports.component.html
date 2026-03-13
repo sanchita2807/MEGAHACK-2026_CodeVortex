@@ -1,0 +1,119 @@
+<header>
+  <div class="header-left">
+    <div class="header-title">Reports</div>
+    <div class="header-subtitle">Insights &amp; Exports</div>
+  </div>
+  <div class="header-actions">
+    <div class="icon-btn">
+      <iconify-icon icon="lucide:calendar" style="font-size: 18px"></iconify-icon>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="export-card">
+    <div>
+      <div class="export-title">Export Data</div>
+      <div class="export-desc">
+        Download inventory and scan history for your accounting software.
+      </div>
+    </div>
+    <div class="export-actions">
+      <div class="btn-export btn-excel">
+        <iconify-icon icon="lucide:file-spreadsheet" style="font-size: 16px"></iconify-icon>
+        Excel Format
+      </div>
+      <div class="btn-export btn-tally">
+        <iconify-icon icon="lucify:database" style="font-size: 16px"></iconify-icon>
+        Tally Export
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Inventory Value</div>
+      <div class="stat-value">₹ 1,42,500</div>
+      <div class="stat-trend trend-up">
+        <iconify-icon icon="lucide:trending-up" style="font-size: 14px"></iconify-icon>
+        +5.2% vs last month
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Invoices Scanned</div>
+      <div class="stat-value">48</div>
+      <div class="stat-trend trend-up">
+        <iconify-icon icon="lucide:trending-up" style="font-size: 14px"></iconify-icon>
+        +12 this week
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="section-header" style="margin: 0">
+      <div class="section-title">Stock Intake Trend</div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-bar" style="height: 40%"></div>
+      <div class="chart-bar" style="height: 60%"></div>
+      <div class="chart-bar" style="height: 30%"></div>
+      <div class="chart-bar highlight" style="height: 85%"></div>
+      <div class="chart-bar" style="height: 50%"></div>
+      <div class="chart-bar" style="height: 70%"></div>
+    </div>
+    <div class="chart-labels">
+      <div class="chart-label">Mon</div>
+      <div class="chart-label">Tue</div>
+      <div class="chart-label">Wed</div>
+      <div class="chart-label">Thu</div>
+      <div class="chart-label">Fri</div>
+      <div class="chart-label">Sat</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Recent Reports</div>
+      <div class="see-all">View All</div>
+    </div>
+    <div class="list">
+      <div class="list-item">
+        <div class="list-icon">
+          <iconify-icon icon="lucide:file-text" style="font-size: 20px"></iconify-icon>
+        </div>
+        <div class="list-details">
+          <div class="list-title">October Summary</div>
+          <div class="list-meta">Exported on Nov 1 • Excel</div>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-icon">
+          <iconify-icon icon="lucide:database" style="font-size: 20px"></iconify-icon>
+        </div>
+        <div class="list-details">
+          <div class="list-title">Q3 Tally Sync</div>
+          <div class="list-meta">Exported on Oct 15 • Tally format</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<nav>
+  <a class="nav-item" routerLink="/home" routerLinkActive="active">
+    <iconify-icon icon="lucide:layout-dashboard" style="font-size: 24px"></iconify-icon>
+    <div class="nav-label">Home</div>
+  </a>
+  <a class="nav-item" routerLink="/inventory" routerLinkActive="active">
+    <iconify-icon icon="lucide:package-search" style="font-size: 24px"></iconify-icon>
+    <div class="nav-label">Inventory</div>
+  </a>
+  <a class="nav-item" routerLink="/reports" routerLinkActive="active">
+    <iconify-icon icon="lucide:file-text" style="font-size: 24px"></iconify-icon>
+    <div class="nav-label">Reports</div>
+  </a>
+  <a class="nav-item" routerLink="/settings" routerLinkActive="active">
+    <iconify-icon icon="lucide:settings" style="font-size: 24px"></iconify-icon>
+    <div class="nav-label">Settings</div>
+  </a>
+</nav>

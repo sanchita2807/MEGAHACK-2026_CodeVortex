@@ -1,0 +1,13 @@
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+@Component({
+  selector: 'app-reports',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive],
+  templateUrl: './reports.component.html',
+  styleUrl: './reports.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class ReportsComponent {}

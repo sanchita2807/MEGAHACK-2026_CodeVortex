@@ -1,0 +1,123 @@
+<header>
+  <div class="header-left">
+    <div class="header-title">SmartStock</div>
+    <div class="header-subtitle">Ramesh Provisions</div>
+  </div>
+  <div class="header-actions">
+    <div class="icon-btn">
+      <iconify-icon icon="lucide:languages" style="font-size: 18px"></iconify-icon>
+    </div>
+    <div class="icon-btn">
+      <iconify-icon icon="lucide:bell" style="font-size: 18px"></iconify-icon>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="scan-card">
+    <div class="scan-info">
+      <div class="scan-title">Scan Invoice</div>
+      <div class="scan-desc">
+        Auto-extract details &amp; sync inventory instantly via OCR.
+      </div>
+    </div>
+    <div class="scan-btn">
+      <iconify-icon icon="lucide:camera" style="font-size: 24px"></iconify-icon>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon blue">
+          <iconify-icon icon="lucide:package" style="font-size: 16px"></iconify-icon>
+        </div>
+      </div>
+      <div class="stat-value">1,248</div>
+      <div class="stat-label">Total Items</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon red">
+          <iconify-icon icon="lucide:alert-triangle" style="font-size: 16px"></iconify-icon>
+        </div>
+      </div>
+      <div class="stat-value">12</div>
+      <div class="stat-label">Low Stock Alerts</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Low-Stock Alerts</div>
+      <div class="see-all">View All</div>
+    </div>
+    <div class="alert-list">
+      <div class="alert-item">
+        <div class="alert-info">
+          <div class="alert-name">Aashirvaad Atta 5kg</div>
+          <div class="alert-stock">Only 2 left in stock</div>
+        </div>
+        <div class="reorder-btn">Reorder</div>
+      </div>
+      <div class="alert-item">
+        <div class="alert-info">
+          <div class="alert-name">Tata Salt 1kg</div>
+          <div class="alert-stock">Only 5 left in stock</div>
+        </div>
+        <div class="reorder-btn">Reorder</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Recent Activity</div>
+    </div>
+    <div class="activity-list">
+      <div class="activity-item">
+        <div class="activity-icon">
+          <iconify-icon icon="lucide:check-circle-2" style="font-size: 20px"></iconify-icon>
+        </div>
+        <div class="activity-details">
+          <div class="activity-title">Metro Cash &amp; Carry Inv.</div>
+          <div class="activity-meta">
+            <span>24 items added</span>
+            <span class="status-badge">Synced</span>
+          </div>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon" style="background-color: #e0f2fe; color: #0284c7">
+          <iconify-icon icon="lucide:file-spreadsheet" style="font-size: 20px"></iconify-icon>
+        </div>
+        <div class="activity-details">
+          <div class="activity-title">Weekly Report Export</div>
+          <div class="activity-meta">
+            <span>Sent to Tally</span>
+            <span class="status-badge">Exported</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<nav>
+  <a class="nav-item" routerLink="/home" routerLinkActive="active">
+    <iconify-icon icon="lucide:layout-dashboard" style="font-size: 24px"></iconify-icon>
+    <div class="nav-label">Home</div>
+  </a>
+  <a class="nav-item" routerLink="/inventory" routerLinkActive="active">
+    <iconify-icon icon="lucide:package-search" style="font-size: 24px"></iconify-icon>
+    <div class="nav-label">Inventory</div>
+  </a>
+  <a class="nav-item" routerLink="/reports" routerLinkActive="active">
+    <iconify-icon icon="lucide:file-text" style="font-size: 24px"></iconify-icon>
+    <div class="nav-label">Reports</div>
+  </a>
+  <a class="nav-item" routerLink="/settings" routerLinkActive="active">
+    <iconify-icon icon="lucide:settings" style="font-size: 24px"></iconify-icon>
+    <div class="nav-label">Settings</div>
+  </a>
+</nav>
