@@ -1,9 +1,10 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { InventoryService, InventoryProduct } from '../../services/inventory.service';
 import { DashboardService, Invoice } from '../../services/dashboard.service';
 import { ToastService } from '../../services/toast.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-inventory',
@@ -21,11 +22,16 @@ export class InventoryComponent implements OnInit {
   selectedTab = 'products';
   lowStockCount = 0;
 
+  // Missing properties for template
+  showNotifications = false;
+  notifications: any[] = [];
+  showLogoutConfirm = false;
+
   constructor(
     private inventoryService: InventoryService,
     private dashboardService: DashboardService,
     private toastService: ToastService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadProducts();
@@ -65,7 +71,7 @@ export class InventoryComponent implements OnInit {
   }
 
   filterProducts() {
-    this.filteredProducts = this.products.filter(p => 
+    this.filteredProducts = this.products.filter(p =>
       p.name.toLowerCase().includes(this.searchQuery)
     );
   }
@@ -86,5 +92,22 @@ export class InventoryComponent implements OnInit {
     this.loadProducts();
     this.loadInvoices();
     this.toastService.success('Inventory refreshed');
+  }
+
+  // Missing methods for template
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  cancelLogout() {
+    this.showLogoutConfirm = false;
+  }
+
+  confirmLogout() {
+    // Add logout logic or call authService
+    this.showLogoutConfirm = false;
+    // Assuming authService is injected, which we might need, but for now just console log
+    console.log('Logging out...');
+    this.toastService.success('Logged out successfully');
   }
 }

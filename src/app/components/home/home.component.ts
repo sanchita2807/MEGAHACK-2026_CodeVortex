@@ -6,6 +6,7 @@ import { DashboardService, DashboardStats, Product, Invoice } from '../../servic
 import { ToastService } from '../../services/toast.service';
 import { OcrService } from '../../services/ocr.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -33,12 +34,19 @@ export class HomeComponent implements OnInit {
   isEditMode = false;
   newItem = { name: '', quantity: 1, price: 0 };
 
+  // Missing properties for template
+  showNotifications = false;
+  notifications: any[] = [];
+  unreadCount = 0;
+  showLogoutConfirm = false;
+
   constructor(
     private dashboardService: DashboardService,
     private ocrService: OcrService,
     private router: Router,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.loadUserData();
@@ -180,12 +188,12 @@ export class HomeComponent implements OnInit {
     if (this.capturedImage) {
       this.isProcessing = true;
       this.toastService.info('Extracting invoice data...');
-      
+
       this.compressImage(this.capturedImage, (compressedImage) => {
         const blob = this.dataUrlToBlob(compressedImage);
         const formData = new FormData();
         formData.append('image', blob, 'invoice.jpg');
-        
+
         this.ocrService.processInvoice(formData).subscribe({
           next: (response) => {
             this.isProcessing = false;
@@ -288,7 +296,7 @@ export class HomeComponent implements OnInit {
 
       this.toastService.success(`Invoice processed! ${this.extractedData.items.length} items added to inventory`);
       console.log('Invoice confirmed and added:', this.extractedData);
-      
+
       setTimeout(() => {
         this.closeCamera();
         this.loadDashboardData();
@@ -314,13 +322,13 @@ export class HomeComponent implements OnInit {
     img.onload = () => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      
+
       let width = img.width;
       let height = img.height;
-      
+
       const maxWidth = 1200;
       const maxHeight = 1200;
-      
+
       if (width > height) {
         if (width > maxWidth) {
           height = Math.round((height * maxWidth) / width);
@@ -332,10 +340,10 @@ export class HomeComponent implements OnInit {
           height = maxHeight;
         }
       }
-      
+
       canvas.width = width;
       canvas.height = height;
-      
+
       if (ctx) {
         ctx.drawImage(img, 0, 0, width, height);
         const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
@@ -366,5 +374,23 @@ export class HomeComponent implements OnInit {
     this.extractedData = null;
     this.isEditMode = false;
     this.newItem = { name: '', quantity: 1, price: 0 };
+  }
+
+  // Missing methods for template
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  logout() {
+    this.showLogoutConfirm = true;
+  }
+
+  cancelLogout() {
+    this.showLogoutConfirm = false;
+  }
+
+  confirmLogout() {
+    this.showLogoutConfirm = false;
+    this.authService.logout();
   }
 }
