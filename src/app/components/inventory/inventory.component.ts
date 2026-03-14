@@ -1,6 +1,6 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { InventoryService, InventoryProduct } from '../../services/inventory.service';
 import { ToastService } from '../../services/toast.service';
 import { AuthService } from '../../services/auth.service';
@@ -20,7 +20,8 @@ export class InventoryComponent implements OnInit {
   searchQuery = '';
   showNotifications = false;
   showLogoutConfirm = false;
-  t: Translations;
+  t!: Translations;
+
   notifications = [
     { id: 1, title: 'Low Stock Alert', message: 'Product A is running low', time: '2 min ago', read: false },
     { id: 2, title: 'Invoice Scanned', message: 'New invoice processed successfully', time: '1 hour ago', read: true }
@@ -29,14 +30,12 @@ export class InventoryComponent implements OnInit {
   constructor(
     private inventoryService: InventoryService,
     private toastService: ToastService,
-    private router: Router,
     private authService: AuthService,
     private translationService: TranslationService
-  ) {
-    this.t = this.translationService.current;
-  }
+  ) {}
 
   ngOnInit() {
+    this.t = this.translationService.current;
     this.translationService.t$.subscribe(t => this.t = t);
     this.loadProducts();
   }

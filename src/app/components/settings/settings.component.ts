@@ -1,7 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
 import { AuthService } from '../../services/auth.service';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
@@ -22,9 +22,8 @@ export class SettingsComponent implements OnInit {
   showLogoutConfirm = false;
   showNotifications = false;
   isLoading = true;
-  t: Translations;
+  t!: Translations;
 
-  // Language
   showLanguageModal = false;
   selectedLanguage = 'English';
   languages = [
@@ -33,18 +32,13 @@ export class SettingsComponent implements OnInit {
     { code: 'mr', label: 'Marathi', native: 'मराठी' }
   ];
 
-  // Notifications toggle
   notificationsEnabled = true;
-
-  // Auto-Backup
   autoBackupEnabled = false;
 
-  // Low Stock Threshold
   showThresholdModal = false;
   lowStockThreshold = 5;
   tempThreshold = 5;
 
-  // Tally Export
   showTallyModal = false;
   tallyCompanyName = '';
   tallyExportFormat = 'xml';
@@ -56,15 +50,13 @@ export class SettingsComponent implements OnInit {
   ];
 
   constructor(
-    private router: Router,
     private toastService: ToastService,
     private authService: AuthService,
     private translationService: TranslationService
-  ) {
-    this.t = this.translationService.current;
-  }
+  ) {}
 
   ngOnInit() {
+    this.t = this.translationService.current;
     this.translationService.t$.subscribe(t => this.t = t);
     this.loadUserData();
     this.loadSavedSettings();
@@ -98,7 +90,6 @@ export class SettingsComponent implements OnInit {
     if (autoBackup !== null) this.autoBackupEnabled = autoBackup === 'true';
   }
 
-  // Language — calls service which updates all pages via BehaviorSubject
   openLanguageModal() { this.showLanguageModal = true; }
 
   selectLanguage(lang: { code: string; label: string; native: string }) {
@@ -108,22 +99,22 @@ export class SettingsComponent implements OnInit {
     this.toastService.success(`Language changed to ${lang.label} (${lang.native})`);
   }
 
-  // Notifications toggle
   toggleNotificationsEnabled() {
     this.notificationsEnabled = !this.notificationsEnabled;
     localStorage.setItem('notificationsEnabled', String(this.notificationsEnabled));
     this.toastService.success(this.notificationsEnabled ? 'Notifications enabled' : 'Notifications disabled');
   }
 
-  // Auto-Backup
   toggleAutoBackup() {
     this.autoBackupEnabled = !this.autoBackupEnabled;
     localStorage.setItem('autoBackupEnabled', String(this.autoBackupEnabled));
     this.toastService.success(this.autoBackupEnabled ? 'Auto-backup enabled' : 'Auto-backup disabled');
   }
 
-  // Low Stock Threshold
-  openThresholdModal() { this.tempThreshold = this.lowStockThreshold; this.showThresholdModal = true; }
+  openThresholdModal() {
+    this.tempThreshold = this.lowStockThreshold;
+    this.showThresholdModal = true;
+  }
 
   saveThreshold() {
     if (this.tempThreshold < 1) this.tempThreshold = 1;
@@ -133,7 +124,6 @@ export class SettingsComponent implements OnInit {
     this.toastService.success(`Low stock threshold set to ${this.lowStockThreshold} items`);
   }
 
-  // Tally Export
   openTallyModal() { this.showTallyModal = true; }
 
   saveTallySettings() {

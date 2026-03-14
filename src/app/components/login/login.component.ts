@@ -24,21 +24,14 @@ export class LoginComponent {
     private router: Router,
     private http: HttpClient,
     private toastService: ToastService
-  ) { }
+  ) {}
 
   onSubmit() {
     this.errorMessage = '';
     this.isLoading = true;
-    
-    const loginData = {
-      email: this.email,
-      password: this.password
-    };
 
-    this.http.post(`${environment.apiUrl}/auth/login-user`, loginData).subscribe({
+    this.http.post(`${environment.apiUrl}/auth/login-user`, { email: this.email, password: this.password }).subscribe({
       next: (response: any) => {
-        console.log('User login response:', response);
-        
         if (response.success) {
           this.toastService.success('Login successful! Welcome back.');
           localStorage.setItem('token', response.token);
@@ -55,8 +48,6 @@ export class LoginComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        console.error('Login error:', error);
-        
         if (error.status === 403) {
           this.errorMessage = 'Access denied. Only regular users can login here.';
         } else if (error.status === 400) {

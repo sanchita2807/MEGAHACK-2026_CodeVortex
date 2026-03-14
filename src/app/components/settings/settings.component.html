@@ -161,9 +161,7 @@
     </div>
     <p class="modal-desc">Choose your preferred language for the app.</p>
     <div class="language-list">
-      <div
-        class="language-item"
-        *ngFor="let lang of languages"
+      <div class="language-item" *ngFor="let lang of languages"
         [class.selected]="selectedLanguage === lang.label"
         (click)="selectLanguage(lang)">
         <div class="language-info">

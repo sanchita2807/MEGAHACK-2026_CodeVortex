@@ -3,8 +3,10 @@ import { Subject } from 'rxjs';
 
 export interface Toast {
     message: string;
-    type: 'success' | 'error';
+    type: 'success' | 'error' | 'confirm' | 'info';
     id: number;
+    onConfirm?: () => void;
+    onCancel?: () => void;
 }
 
 @Injectable({
@@ -15,7 +17,7 @@ export class ToastService {
     toasts$ = this.toastSubject.asObservable();
     private counter = 0;
 
-    show(message: string, type: 'success' | 'error' = 'success') {
+    show(message: string, type: 'success' | 'error' | 'confirm' | 'info' = 'success') {
         this.toastSubject.next({ message, type, id: this.counter++ });
     }
 
@@ -25,5 +27,19 @@ export class ToastService {
 
     error(message: string) {
         this.show(message, 'error');
+    }
+
+    confirm(message: string, onConfirm: () => void, onCancel?: () => void) {
+        this.toastSubject.next({ 
+            message, 
+            type: 'confirm', 
+            id: this.counter++, 
+            onConfirm, 
+            onCancel 
+        });
+    }
+
+    info(message: string) {
+        this.show(message, 'info');
     }
 }

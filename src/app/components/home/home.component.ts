@@ -21,7 +21,8 @@ export class HomeComponent implements OnInit {
   shopName = 'My Shop';
   showNotifications = false;
   showLogoutConfirm = false;
-  t: Translations;
+  t!: Translations;
+
   notifications = [
     { id: 1, title: 'Low Stock Alert', message: 'Product A is running low', time: '2 min ago', read: false },
     { id: 2, title: 'Invoice Scanned', message: 'New invoice processed successfully', time: '1 hour ago', read: true }
@@ -33,11 +34,10 @@ export class HomeComponent implements OnInit {
     private toastService: ToastService,
     private authService: AuthService,
     private translationService: TranslationService
-  ) {
-    this.t = this.translationService.current;
-  }
+  ) {}
 
   ngOnInit() {
+    this.t = this.translationService.current;
     this.translationService.t$.subscribe(t => this.t = t);
     this.loadUserData();
     this.loadDashboardData();
