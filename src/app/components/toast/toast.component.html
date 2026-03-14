@@ -1,7 +1,7 @@
 <div class="toast-container">
     <div *ngFor="let toast of toasts" class="toast" [ngClass]="toast.type">
         <div class="toast-icon">
-            <iconify-icon [icon]="toast.type === 'success' ? 'lucide:check-circle' : 'lucide:alert-circle'"
+            <iconify-icon [icon]="toast.type === 'success' ? 'lucide:check-circle' : (toast.type === 'error' ? 'lucide:alert-circle' : 'lucide:info')"
                 style="font-size: 20px;">
             </iconify-icon>
         </div>

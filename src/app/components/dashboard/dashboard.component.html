@@ -18,7 +18,7 @@
     <!-- Main Content -->
     <main class="dashboard-content">
         <!-- Hero Scan Card -->
-        <section class="hero-card">
+        <section class="hero-card" (click)="openScanInvoice()" style="cursor: pointer;">
             <div class="hero-info">
                 <h2 class="hero-title">Scan Invoice</h2>
                 <p class="hero-subtitle">Auto-extract details & sync inventory instantly via OCR.</p>
@@ -82,6 +82,9 @@
             </div>
         </section>
     </main>
+
+    <!-- Camera Modal -->
+    <app-camera-modal></app-camera-modal>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">

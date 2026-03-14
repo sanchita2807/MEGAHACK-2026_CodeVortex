@@ -11,15 +11,195 @@
 </header>
 
 <main>
-  <div class="scan-card">
+  <div class="scan-card" (click)="openCamera()" [style.opacity]="isProcessing ? 0.5 : 1" [style.pointer-events]="isProcessing ? 'none' : 'auto'">
     <div class="scan-info">
       <div class="scan-title">Scan Invoice</div>
       <div class="scan-desc">
-        Auto-extract details &amp; sync inventory instantly via OCR.
+        Auto-extract details & sync inventory instantly via OCR.
       </div>
     </div>
     <div class="scan-btn">
       <iconify-icon icon="lucide:camera" style="font-size: 24px"></iconify-icon>
+    </div>
+  </div>
+
+  <!-- Captured Image Display -->
+  <div class="captured-image-section" *ngIf="capturedImage && !showConfirmation">
+    <div class="captured-header">
+      <h3>Captured Invoice</h3>
+      <button class="close-btn" (click)="retakePhoto()" [disabled]="isProcessing">
+        <iconify-icon icon="lucide:x" style="font-size: 20px;"></iconify-icon>
+      </button>
+    </div>
+    
+    <div class="processing-overlay" *ngIf="isProcessing">
+      <div class="spinner"></div>
+      <p>Extracting invoice data...</p>
+    </div>
+    
+    <img [src]="capturedImage" alt="Captured Invoice" class="captured-img" [style.opacity]="isProcessing ? 0.5 : 1" />
+    <div class="captured-actions">
+      <button class="btn btn-secondary" (click)="retakePhoto()" [disabled]="isProcessing">Retake</button>
+      <button class="btn btn-primary" (click)="confirmCapture()" [disabled]="isProcessing">
+        <span *ngIf="!isProcessing">Extract Data</span>
+        <span *ngIf="isProcessing">Extracting...</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Confirmation Dialog -->
+  <div class="confirmation-overlay" *ngIf="showConfirmation && extractedData">
+    <div class="confirmation-dialog">
+      <div class="confirmation-header">
+        <h2>Confirm Invoice Details</h2>
+        <button class="close-btn" (click)="cancelConfirmation()">
+          <iconify-icon icon="lucide:x" style="font-size: 24px;"></iconify-icon>
+        </button>
+      </div>
+
+      <div class="confirmation-body">
+        <!-- Validation Alerts -->
+        <div *ngIf="extractedData.validation" class="validation-section">
+          <div *ngIf="extractedData.validation.errors && extractedData.validation.errors.length > 0" class="error-alert">
+            <div class="alert-title">⚠️ Errors Found</div>
+            <div class="alert-items">
+              <div class="alert-item" *ngFor="let error of extractedData.validation.errors">
+                {{ error }}
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="extractedData.validation.warnings && extractedData.validation.warnings.length > 0" class="warning-alert">
+            <div class="alert-title">ℹ️ Warnings</div>
+            <div class="alert-items">
+              <div class="alert-item" *ngFor="let warning of extractedData.validation.warnings">
+                {{ warning }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vendor Info -->
+        <div class="info-section">
+          <div class="info-label">Vendor</div>
+          <div class="info-value">{{ extractedData.vendor }}</div>
+        </div>
+
+        <!-- Invoice Date -->
+        <div class="info-section" *ngIf="extractedData.invoiceDate">
+          <div class="info-label">Invoice Date</div>
+          <div class="info-value">{{ extractedData.invoiceDate }}</div>
+        </div>
+
+        <!-- Total Amount -->
+        <div class="info-section">
+          <div class="info-label">Total Amount</div>
+          <div class="info-value">₹{{ extractedData.totalAmount }}</div>
+        </div>
+
+        <!-- Tax -->
+        <div class="info-section" *ngIf="extractedData.tax > 0">
+          <div class="info-label">Tax</div>
+          <div class="info-value">₹{{ extractedData.tax }}</div>
+        </div>
+
+        <!-- Fee -->
+        <div class="info-section" *ngIf="extractedData.fee > 0">
+          <div class="info-label">Fee/Delivery</div>
+          <div class="info-value">₹{{ extractedData.fee }}</div>
+        </div>
+
+        <!-- Items List with Edit Option -->
+        <div class="items-section">
+          <div class="items-header">
+            <div class="items-label">Items ({{ extractedData.items?.length || 0 }} items)</div>
+            <button class="edit-toggle-btn" (click)="toggleEditMode()">
+              <iconify-icon [icon]="isEditMode ? 'lucide:check' : 'lucide:edit-2'" style="font-size: 14px;"></iconify-icon>
+              <span>{{ isEditMode ? 'Done' : 'Edit' }}</span>
+            </button>
+          </div>
+
+          <!-- Items List -->
+          <div class="items-list" *ngIf="extractedData.items && extractedData.items.length > 0">
+            <div class="item-row" *ngFor="let item of extractedData.items; let i = index" [class.editing]="item.isEditing">
+              <div *ngIf="!item.isEditing" class="item-details">
+                <div class="item-name">{{ i + 1 }}. {{ item.name || 'Unknown Item' }}</div>
+                <div class="item-meta">Qty: {{ item.quantity || 0 }} | Price: ₹{{ item.price || 0 }}</div>
+              </div>
+
+              <div *ngIf="item.isEditing" class="item-edit-form">
+                <input [(ngModel)]="item.name" type="text" placeholder="Item name" class="item-input" />
+                <input [(ngModel)]="item.quantity" type="number" placeholder="Qty" class="item-input-small" />
+                <input [(ngModel)]="item.price" type="number" placeholder="Price" class="item-input-small" />
+                <button class="btn-save" (click)="saveItem(i)">
+                  <iconify-icon icon="lucide:check" style="font-size: 14px;"></iconify-icon>
+                </button>
+              </div>
+
+              <div class="item-actions" *ngIf="isEditMode && !item.isEditing">
+                <button class="btn-edit" (click)="editItem(i)">
+                  <iconify-icon icon="lucide:edit-2" style="font-size: 14px;"></iconify-icon>
+                </button>
+                <button class="btn-delete" (click)="deleteItem(i)">
+                  <iconify-icon icon="lucide:trash-2" style="font-size: 14px;"></iconify-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!extractedData.items || extractedData.items.length === 0" style="padding: 16px; text-align: center; color: #999;">
+            <p>No items found in invoice</p>
+          </div>
+
+          <!-- Add New Item Form -->
+          <div *ngIf="isEditMode" class="add-item-form">
+            <div class="form-title">Add New Item</div>
+            <div class="form-row">
+              <input [(ngModel)]="newItem.name" type="text" placeholder="Item name" class="item-input" />
+              <input [(ngModel)]="newItem.quantity" type="number" placeholder="Qty" class="item-input-small" />
+              <input [(ngModel)]="newItem.price" type="number" placeholder="Price" class="item-input-small" />
+              <button class="btn-add" (click)="addNewItem()">
+                <iconify-icon icon="lucide:plus" style="font-size: 14px;"></iconify-icon>
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary-section">
+          <div class="summary-item">
+            <span>Total Items:</span>
+            <strong>{{ extractedData.items?.length || 0 }}</strong>
+          </div>
+        </div>
+
+        <!-- Raw OCR Text -->
+        <div class="raw-text-section">
+          <button class="raw-text-toggle" (click)="toggleRawText()">
+            <iconify-icon [icon]="showRawText ? 'lucide:chevron-up' : 'lucide:chevron-down'" style="font-size: 16px;"></iconify-icon>
+            <span>View Raw OCR Text & Debug Info</span>
+          </button>
+          <div class="raw-text-content" *ngIf="showRawText">
+            <div style="margin-bottom: 12px;">
+              <strong>Debug Info:</strong>
+              <pre>{{ extractedData | json }}</pre>
+            </div>
+            <div>
+              <strong>Raw OCR Text:</strong>
+              <pre>{{ extractedData.rawText }}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confirmation-footer">
+        <button class="btn btn-secondary" (click)="cancelConfirmation()" [disabled]="isProcessing">Cancel</button>
+        <button class="btn btn-primary" (click)="confirmAndAddToInventory()" [disabled]="isProcessing || (extractedData.validation && !extractedData.validation.isValid)">
+          <span *ngIf="!isProcessing">Confirm & Add to Inventory</span>
+          <span *ngIf="isProcessing">Processing...</span>
+        </button>
+      </div>
     </div>
   </div>
 

@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 
 export interface Toast {
     message: string;
-    type: 'success' | 'error';
+    type: 'success' | 'error' | 'info';
     id: number;
 }
 
@@ -15,7 +15,7 @@ export class ToastService {
     toasts$ = this.toastSubject.asObservable();
     private counter = 0;
 
-    show(message: string, type: 'success' | 'error' = 'success') {
+    show(message: string, type: 'success' | 'error' | 'info' = 'success') {
         this.toastSubject.next({ message, type, id: this.counter++ });
     }
 
@@ -25,5 +25,9 @@ export class ToastService {
 
     error(message: string) {
         this.show(message, 'error');
+    }
+
+    info(message: string) {
+        this.show(message, 'info');
     }
 }

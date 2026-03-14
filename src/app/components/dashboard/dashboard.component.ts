@@ -1,18 +1,21 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { DashboardService, DashboardStats, Product, Invoice } from '../../services/dashboard.service';
 import { ToastService } from '../../services/toast.service';
+import { CameraModalComponent } from '../camera-modal/camera-modal.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CameraModalComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild(CameraModalComponent) cameraModal!: CameraModalComponent;
+
   stats: DashboardStats = { totalItems: 0, lowStockAlerts: 0, invoicesScanned: 0, totalInventoryValue: 0 };
   lowStockProducts: Product[] = [];
   recentInvoices: Invoice[] = [];
@@ -51,6 +54,12 @@ export class DashboardComponent implements OnInit {
         this.toastService.error('Failed to load recent invoices');
       }
     });
+  }
+
+  openScanInvoice() {
+    if (this.cameraModal) {
+      this.cameraModal.openCamera();
+    }
   }
 
   navigateTo(route: string) {
