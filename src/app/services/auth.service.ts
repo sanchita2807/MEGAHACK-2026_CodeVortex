@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AuthService {
   private readonly USER_NAME_KEY = 'userName';
   private readonly SHOP_NAME_KEY = 'shopName';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${environment.apiUrl}/auth/login-user`, { email, password })
@@ -71,5 +72,6 @@ export class AuthService {
     localStorage.removeItem(this.USER_TYPE_KEY);
     localStorage.removeItem(this.USER_NAME_KEY);
     localStorage.removeItem(this.SHOP_NAME_KEY);
+    this.router.navigate(['/login']);
   }
 }

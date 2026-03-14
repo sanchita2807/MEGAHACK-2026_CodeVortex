@@ -29,7 +29,7 @@ export class LoginComponent {
   onSubmit() {
     this.errorMessage = '';
     this.loading = true;
-    
+
     const loginData = {
       email: this.email,
       password: this.password
@@ -39,7 +39,7 @@ export class LoginComponent {
       next: (response: any) => {
         this.loading = false;
         console.log('User login response:', response);
-        
+
         if (response.success) {
           this.toastService.success('Login successful! Welcome back.');
           localStorage.setItem('token', response.token);
@@ -56,7 +56,7 @@ export class LoginComponent {
       error: (error) => {
         this.loading = false;
         console.error('Login error:', error);
-        
+
         if (error.status === 403) {
           this.errorMessage = 'Access denied. Only regular users can login here.';
         } else if (error.status === 400) {

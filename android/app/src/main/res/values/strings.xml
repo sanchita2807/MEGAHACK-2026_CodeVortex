@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SmartInvoice</string>
+    <string name="title_activity_main">SmartInvoice</string>
+    <string name="package_name">com.smartinvoice.app</string>
+    <string name="custom_url_scheme">com.smartinvoice.app</string>
+</resources>

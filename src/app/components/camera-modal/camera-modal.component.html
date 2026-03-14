@@ -1,0 +1,44 @@
+<div class="camera-modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+  <div class="camera-modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Scan Invoice</h2>
+      <button class="close-btn" (click)="closeModal()" [disabled]="isProcessing">
+        <iconify-icon icon="lucide:x" style="font-size: 24px;"></iconify-icon>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Processing Indicator -->
+      <div class="processing-overlay" *ngIf="isProcessing">
+        <div class="spinner"></div>
+        <p>Processing invoice with OCR...</p>
+      </div>
+
+      <!-- Camera View -->
+      <div class="camera-container" *ngIf="!capturedImage && isCameraActive && !isProcessing">
+        <video #videoElement autoplay playsinline></video>
+        <div class="camera-frame"></div>
+      </div>
+
+      <!-- Captured Image Preview -->
+      <div class="preview-container" *ngIf="capturedImage && !isProcessing">
+        <img [src]="capturedImage" alt="Captured Invoice" />
+      </div>
+
+      <!-- Hidden Canvas for Capture -->
+      <canvas #canvasElement style="display: none;"></canvas>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeModal()" [disabled]="isProcessing">Cancel</button>
+      <button class="btn btn-primary" *ngIf="!capturedImage && !isProcessing" (click)="capturePhoto()">
+        <iconify-icon icon="lucide:camera" style="font-size: 18px;"></iconify-icon>
+        Capture
+      </button>
+      <div *ngIf="capturedImage && !isProcessing" class="action-buttons">
+        <button class="btn btn-secondary" (click)="retakePhoto()">Retake</button>
+        <button class="btn btn-primary" (click)="confirmCapture()">Confirm & Process</button>
+      </div>
+    </div>
+  </div>
+</div>

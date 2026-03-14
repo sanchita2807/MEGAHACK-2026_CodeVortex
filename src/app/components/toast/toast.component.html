@@ -1,12 +1,9 @@
 <div class="toast-container">
     <div *ngFor="let toast of toasts" class="toast" [ngClass]="toast.type">
-        <div class="toast-icon" *ngIf="toast.type !== 'confirm'">
-            <iconify-icon [icon]="toast.type === 'success' ? 'lucide:check-circle' : 'lucide:alert-circle'"
+        <div class="toast-icon">
+            <iconify-icon [icon]="toast.type === 'success' ? 'lucide:check-circle' : (toast.type === 'error' ? 'lucide:alert-circle' : (toast.type === 'confirm' ? 'lucide:alert-circle' : 'lucide:info'))"
                 style="font-size: 20px;">
             </iconify-icon>
-        </div>
-        <div class="toast-icon" *ngIf="toast.type === 'confirm'">
-            <iconify-icon icon="lucide:alert-circle" style="font-size: 20px;"></iconify-icon>
         </div>
         <div class="toast-message">{{ toast.message }}</div>
         <div class="toast-actions" *ngIf="toast.type === 'confirm'">

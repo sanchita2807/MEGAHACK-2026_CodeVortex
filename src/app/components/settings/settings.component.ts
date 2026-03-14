@@ -39,6 +39,12 @@ export class SettingsComponent implements OnInit {
     shopName: '',
     businessType: ''
   };
+  showLogoutConfirm = false;
+  showNotifications = false;
+  notifications = [
+    { id: 1, title: 'Low Stock Alert', message: 'Product A is running low', time: '2 min ago', read: false },
+    { id: 2, title: 'Invoice Scanned', message: 'New invoice processed successfully', time: '1 hour ago', read: true }
+  ];
 
   constructor(
     private router: Router,
@@ -139,7 +145,24 @@ export class SettingsComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.showLogoutConfirm = true;
+  }
+
+  confirmLogout() {
+    this.showLogoutConfirm = false;
     this.toastService.success('Logged out successfully');
-    this.router.navigate(['/login']);
+    this.authService.logout();
+  }
+
+  cancelLogout() {
+    this.showLogoutConfirm = false;
+  }
+
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  get unreadCount() {
+    return this.notifications.filter(n => !n.read).length;
   }
 }

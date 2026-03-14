@@ -3,14 +3,55 @@
     <div class="header-title">Inventory</div>
   </div>
   <div class="header-actions">
-    <div class="icon-btn">
-      <iconify-icon icon="lucide:file-down" style="font-size: 18px"></iconify-icon>
+    <div class="icon-btn" (click)="refreshData()" title="Refresh">
+      <iconify-icon icon="lucide:refresh-cw" style="font-size: 18px"></iconify-icon>
     </div>
-    <div class="icon-btn">
+    <div class="icon-btn" title="Filter">
       <iconify-icon icon="lucide:filter" style="font-size: 18px"></iconify-icon>
     </div>
   </div>
 </header>
+
+<div class="notification-panel" *ngIf="showNotifications">
+  <div class="notification-overlay" (click)="toggleNotifications()"></div>
+  <div class="notification-content">
+    <div class="notification-header">
+      <h3>Notifications</h3>
+      <iconify-icon icon="lucide:x" (click)="toggleNotifications()" style="cursor: pointer; font-size: 20px"></iconify-icon>
+    </div>
+    <div class="notification-list">
+      <div class="notification-item" *ngFor="let notif of notifications" [class.unread]="!notif.read">
+        <div class="notification-icon">
+          <iconify-icon icon="lucide:bell" style="font-size: 20px"></iconify-icon>
+        </div>
+        <div class="notification-details">
+          <div class="notification-title">{{ notif.title }}</div>
+          <div class="notification-message">{{ notif.message }}</div>
+          <div class="notification-time">{{ notif.time }}</div>
+        </div>
+      </div>
+      <div *ngIf="notifications.length === 0" class="no-notifications">
+        <iconify-icon icon="lucide:bell-off" style="font-size: 48px; color: #d4d4d8"></iconify-icon>
+        <p>No notifications</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="logout-modal" *ngIf="showLogoutConfirm">
+  <div class="modal-overlay" (click)="cancelLogout()"></div>
+  <div class="modal-content">
+    <div class="modal-icon">
+      <iconify-icon icon="lucide:log-out" style="font-size: 48px; color: #ef4444"></iconify-icon>
+    </div>
+    <h2>Logout Confirmation</h2>
+    <p>Are you sure you want to logout?</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="cancelLogout()">No</button>
+      <button class="btn-confirm" (click)="confirmLogout()">Yes</button>
+    </div>
+  </div>
+</div>
 
 <main>
   <div class="search-container">
@@ -23,38 +64,124 @@
     </div>
   </div>
 
+  <!-- Tabs -->
   <div class="tabs-container">
-    <div class="tab active">All Items</div>
-    <div class="tab inactive">Low Stock ({{ getLowStockCount() }})</div>
+    <div class="tab" [class.active]="selectedTab === 'products'" (click)="selectTab('products')">
+      All Items ({{ products.length }})
+    </div>
+    <div class="tab" [class.active]="selectedTab === 'lowstock'" (click)="selectTab('lowstock')">
+      Low Stock ({{ getLowStockCount() }})
+    </div>
+    <div class="tab" [class.active]="selectedTab === 'invoices'" (click)="selectTab('invoices')">
+      Scanned Invoices ({{ invoices.length }})
+    </div>
   </div>
 
-  <div class="inventory-header">
-    <div class="inventory-title">All Items</div>
-    <div class="inventory-count">{{ filteredProducts.length }} items</div>
-  </div>
-
-  <div class="inventory-list">
-    <div class="inventory-item" *ngFor="let product of filteredProducts">
-      <div class="item-img">
-        <iconify-icon icon="lucide:package" style="font-size: 24px"></iconify-icon>
-      </div>
-      <div class="item-info">
-        <div class="item-name">{{ product.name }}</div>
-        <div class="item-meta">
-          <span>ID: {{ product.id }}</span>
-          <span>•</span>
-          <span>Min: {{ product.threshold }}</span>
-        </div>
-      </div>
-      <div class="item-status">
-        <div class="item-price">₹{{ product.price.toFixed(2) }}</div>
-        <div class="stock-badge" [class.low]="isLowStock(product)">{{ product.stockLevel }} in stock</div>
-      </div>
+  <!-- Products Tab -->
+  <div *ngIf="selectedTab === 'products'" class="tab-content">
+    <div class="inventory-header">
+      <div class="inventory-title">All Items</div>
+      <div class="inventory-count">{{ filteredProducts.length }} items</div>
     </div>
 
-    <div *ngIf="filteredProducts.length === 0" style="text-align: center; padding: 40px; color: #71717a;">
-      <iconify-icon icon="lucide:package-x" style="font-size: 48px; margin-bottom: 16px;"></iconify-icon>
-      <p>No products found</p>
+    <div class="inventory-list">
+      <div class="inventory-item" *ngFor="let product of filteredProducts">
+        <div class="item-img">
+          <iconify-icon icon="lucide:package" style="font-size: 24px"></iconify-icon>
+        </div>
+        <div class="item-info">
+          <div class="item-name">{{ product.name }}</div>
+          <div class="item-meta">
+            <span>ID: {{ product.id }}</span>
+            <span>•</span>
+            <span>Min: {{ product.threshold }}</span>
+          </div>
+        </div>
+        <div class="item-status">
+          <div class="item-price">₹{{ product.price }}</div>
+          <div class="stock-badge" [class.low]="isLowStock(product)">{{ product.stockLevel }} in stock</div>
+        </div>
+      </div>
+
+      <div *ngIf="filteredProducts.length === 0" style="text-align: center; padding: 40px; color: #71717a;">
+        <iconify-icon icon="lucide:package-x" style="font-size: 48px; margin-bottom: 16px;"></iconify-icon>
+        <p>No products found</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Low Stock Tab -->
+  <div *ngIf="selectedTab === 'lowstock'" class="tab-content">
+    <div class="inventory-header">
+      <div class="inventory-title">Low Stock Items</div>
+      <div class="inventory-count">{{ (products | slice:0).filter(p => p.stockLevel <= p.threshold).length }} items</div>
+    </div>
+
+    <div class="inventory-list">
+      <div class="inventory-item" *ngFor="let product of products" [hidden]="!isLowStock(product)">
+        <div class="item-img">
+          <iconify-icon icon="lucide:alert-triangle" style="font-size: 24px; color: #ef4444;"></iconify-icon>
+        </div>
+        <div class="item-info">
+          <div class="item-name">{{ product.name }}</div>
+          <div class="item-meta">
+            <span>ID: {{ product.id }}</span>
+            <span>•</span>
+            <span>Min: {{ product.threshold }}</span>
+          </div>
+        </div>
+        <div class="item-status">
+          <div class="item-price">₹{{ product.price }}</div>
+          <div class="stock-badge low">{{ product.stockLevel }} in stock</div>
+        </div>
+      </div>
+
+      <div *ngIf="getLowStockCount() === 0" style="text-align: center; padding: 40px; color: #71717a;">
+        <iconify-icon icon="lucide:check-circle" style="font-size: 48px; margin-bottom: 16px; color: #4CAF50;"></iconify-icon>
+        <p>All items are well stocked!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scanned Invoices Tab -->
+  <div *ngIf="selectedTab === 'invoices'" class="tab-content">
+    <div class="inventory-header">
+      <div class="inventory-title">Scanned Invoices</div>
+      <div class="inventory-count">{{ invoices.length }} invoices</div>
+    </div>
+
+    <div class="invoices-list">
+      <div class="invoice-card" *ngFor="let invoice of invoices">
+        <div class="invoice-header">
+          <div class="invoice-vendor">
+            <iconify-icon icon="lucide:building-2" style="font-size: 20px; margin-right: 8px;"></iconify-icon>
+            <div>
+              <div class="vendor-name">{{ invoice.vendor }}</div>
+              <div class="invoice-id">Invoice ID: {{ invoice.id }}</div>
+            </div>
+          </div>
+          <div class="invoice-status">
+            <span class="status-badge" [class.processed]="invoice.status === 'PROCESSED'">{{ invoice.status }}</span>
+          </div>
+        </div>
+
+        <div class="invoice-details">
+          <div class="detail-item">
+            <span class="detail-label">Items Added:</span>
+            <span class="detail-value">{{ invoice.items }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Total Amount:</span>
+            <span class="detail-value">₹{{ invoice.amount }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="invoices.length === 0" style="text-align: center; padding: 40px; color: #71717a;">
+        <iconify-icon icon="lucide:file-x" style="font-size: 48px; margin-bottom: 16px;"></iconify-icon>
+        <p>No scanned invoices yet</p>
+        <p style="font-size: 12px; margin-top: 8px;">Scan an invoice from the home page to see it here</p>
+      </div>
     </div>
   </div>
 </main>

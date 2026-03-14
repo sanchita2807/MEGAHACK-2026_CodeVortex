@@ -50,6 +50,10 @@
     min-width: 350px;
 }
 
+.toast.info {
+    border-left: 4px solid #3b82f6;
+}
+
 .toast-icon {
     display: flex;
     align-items: center;
@@ -66,6 +70,10 @@
 
 .toast.confirm .toast-icon {
     color: #f59e0b;
+}
+
+.toast.info .toast-icon {
+    color: #3b82f6;
 }
 
 .toast-message {
