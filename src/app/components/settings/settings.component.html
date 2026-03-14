@@ -131,12 +131,15 @@
   <div class="settings-group">
     <div class="settings-group-title">{{ t.other }}</div>
     <div class="settings-card">
-      <div class="settings-item">
+      <div class="settings-item" (click)="openHelpModal()">
         <div class="settings-item-left">
           <div class="settings-icon">
             <iconify-icon icon="lucide:help-circle" style="font-size: 18px"></iconify-icon>
           </div>
           <div class="settings-label">{{ t.helpSupport }}</div>
+        </div>
+        <div class="settings-value">
+          <iconify-icon icon="lucide:chevron-right" style="font-size: 16px"></iconify-icon>
         </div>
       </div>
       <div class="settings-item" (click)="logout()" style="cursor: pointer;">
@@ -226,6 +229,66 @@
       <button class="btn-cancel" (click)="showTallyModal = false">Cancel</button>
       <button class="btn-confirm" (click)="saveTallySettings()">Save</button>
     </div>
+  </div>
+</div>
+
+<!-- Help & Support Modal -->
+<div class="settings-modal" *ngIf="showHelpModal">
+  <div class="modal-overlay" (click)="showHelpModal = false"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ t.helpSupport }}</h2>
+      <iconify-icon icon="lucide:x" (click)="showHelpModal = false" style="cursor:pointer; font-size:20px"></iconify-icon>
+    </div>
+    <p class="modal-desc">We're here to help. Reach us through any channel below.</p>
+    <div class="help-list">
+
+      <a class="help-card" href="mailto:support@smartinvoice.com">
+        <div class="help-card-icon" style="background:#e0f2fe; color:#0284c7">
+          <iconify-icon icon="lucide:mail" style="font-size:20px"></iconify-icon>
+        </div>
+        <div class="help-card-body">
+          <div class="help-card-title">Email Support</div>
+          <div class="help-card-sub">support&#64;smartinvoice.com</div>
+        </div>
+        <iconify-icon icon="lucide:arrow-up-right" style="font-size:16px; color:#94a3b8"></iconify-icon>
+      </a>
+
+      <a class="help-card" href="tel:+911800123456">
+        <div class="help-card-icon" style="background:#dcfce7; color:#166534">
+          <iconify-icon icon="lucide:phone" style="font-size:20px"></iconify-icon>
+        </div>
+        <div class="help-card-body">
+          <div class="help-card-title">Phone Support</div>
+          <div class="help-card-sub">1800-123-456 (Toll Free)</div>
+        </div>
+        <iconify-icon icon="lucide:arrow-up-right" style="font-size:16px; color:#94a3b8"></iconify-icon>
+      </a>
+
+      <a class="help-card" href="https://wa.me/919876543210" target="_blank">
+        <div class="help-card-icon" style="background:#dcfce7; color:#15803d">
+          <iconify-icon icon="simple-icons:whatsapp" style="font-size:20px"></iconify-icon>
+        </div>
+        <div class="help-card-body">
+          <div class="help-card-title">WhatsApp</div>
+          <div class="help-card-sub">+91 98765-43210</div>
+        </div>
+        <iconify-icon icon="lucide:arrow-up-right" style="font-size:16px; color:#94a3b8"></iconify-icon>
+      </a>
+
+      <a class="help-card" href="https://smartinvoice.com/docs" target="_blank">
+        <div class="help-card-icon" style="background:#f3e8ff; color:#7c3aed">
+          <iconify-icon icon="lucide:book-open" style="font-size:20px"></iconify-icon>
+        </div>
+        <div class="help-card-body">
+          <div class="help-card-title">Documentation</div>
+          <div class="help-card-sub">Browse guides & FAQs</div>
+        </div>
+        <iconify-icon icon="lucide:arrow-up-right" style="font-size:16px; color:#94a3b8"></iconify-icon>
+      </a>
+
+    </div>
+    <div class="help-version">SmartInvoice v1.0.0 &nbsp;·&nbsp; Made with ❤️ in India</div>
   </div>
 </div>
 

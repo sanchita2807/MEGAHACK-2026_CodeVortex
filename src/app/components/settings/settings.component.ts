@@ -44,6 +44,8 @@ export class SettingsComponent implements OnInit {
   tallyExportFormat = 'xml';
   tallyAutoSync = false;
 
+  showHelpModal = false;
+
   notifications = [
     { id: 1, title: 'Low Stock Alert', message: 'Product A is running low', time: '2 min ago', read: false },
     { id: 2, title: 'Invoice Scanned', message: 'New invoice processed successfully', time: '1 hour ago', read: true }
@@ -133,6 +135,8 @@ export class SettingsComponent implements OnInit {
     this.showTallyModal = false;
     this.toastService.success('Tally export settings saved');
   }
+
+  openHelpModal() { this.showHelpModal = true; }
 
   logout() { this.showLogoutConfirm = true; }
   confirmLogout() { this.showLogoutConfirm = false; this.toastService.success('Logged out successfully'); this.authService.logout(); }
