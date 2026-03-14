@@ -18,7 +18,7 @@
   <div class="notification-overlay" (click)="toggleNotifications()"></div>
   <div class="notification-content">
     <div class="notification-header">
-      <h3>Notifications</h3>
+      <h3>{{ t.notificationsTitle }}</h3>
       <iconify-icon icon="lucide:x" (click)="toggleNotifications()" style="cursor: pointer; font-size: 20px"></iconify-icon>
     </div>
     <div class="notification-list">
@@ -34,7 +34,7 @@
       </div>
       <div *ngIf="notifications.length === 0" class="no-notifications">
         <iconify-icon icon="lucide:bell-off" style="font-size: 48px; color: #d4d4d8"></iconify-icon>
-        <p>No notifications</p>
+        <p>{{ t.noNotifications }}</p>
       </div>
     </div>
   </div>
@@ -46,11 +46,11 @@
     <div class="modal-icon">
       <iconify-icon icon="lucide:log-out" style="font-size: 48px; color: #ef4444"></iconify-icon>
     </div>
-    <h2>Logout Confirmation</h2>
-    <p>Are you sure you want to logout?</p>
+    <h2>{{ t.logoutConfirmTitle }}</h2>
+    <p>{{ t.logoutConfirmMsg }}</p>
     <div class="modal-actions">
-      <button class="btn-cancel" (click)="cancelLogout()">No</button>
-      <button class="btn-confirm" (click)="confirmLogout()">Yes</button>
+      <button class="btn-cancel" (click)="cancelLogout()">{{ t.no }}</button>
+      <button class="btn-confirm" (click)="confirmLogout()">{{ t.yes }}</button>
     </div>
   </div>
 </div>
@@ -58,10 +58,8 @@
 <main>
   <div class="scan-card">
     <div class="scan-info">
-      <div class="scan-title">Scan Invoice</div>
-      <div class="scan-desc">
-        Auto-extract details &amp; sync inventory instantly via OCR.
-      </div>
+      <div class="scan-title">{{ t.scanInvoice }}</div>
+      <div class="scan-desc">{{ t.scanDesc }}</div>
     </div>
     <div class="scan-btn">
       <iconify-icon icon="lucide:camera" style="font-size: 24px"></iconify-icon>
@@ -76,7 +74,7 @@
         </div>
       </div>
       <div class="stat-value">{{ stats.totalItems }}</div>
-      <div class="stat-label">Total Items</div>
+      <div class="stat-label">{{ t.totalItems }}</div>
     </div>
     <div class="stat-card">
       <div class="stat-header">
@@ -85,32 +83,32 @@
         </div>
       </div>
       <div class="stat-value">{{ stats.lowStockAlerts }}</div>
-      <div class="stat-label">Low Stock Alerts</div>
+      <div class="stat-label">{{ t.lowStockAlerts }}</div>
     </div>
   </div>
 
   <div class="section">
     <div class="section-header">
-      <div class="section-title">Low-Stock Alerts</div>
-      <div class="see-all" (click)="navigateTo('/inventory')">View All</div>
+      <div class="section-title">{{ t.lowStockAlertsTitle }}</div>
+      <div class="see-all" (click)="navigateTo('/inventory')">{{ t.viewAll }}</div>
     </div>
     <div class="alert-list">
       <div class="alert-item" *ngFor="let product of lowStockProducts">
         <div class="alert-info">
           <div class="alert-name">{{ product.name }}</div>
-          <div class="alert-stock">Only {{ product.stockLevel }} left in stock</div>
+          <div class="alert-stock">{{ t.onlyLeft.replace('{n}', product.stockLevel.toString()) }}</div>
         </div>
-        <div class="reorder-btn">Reorder</div>
+        <div class="reorder-btn">{{ t.reorder }}</div>
       </div>
       <div *ngIf="lowStockProducts.length === 0" style="text-align: center; padding: 20px; color: #71717a;">
-        <p>No low stock items</p>
+        <p>{{ t.noLowStock }}</p>
       </div>
     </div>
   </div>
 
   <div class="section">
     <div class="section-header">
-      <div class="section-title">Recent Activity</div>
+      <div class="section-title">{{ t.recentActivity }}</div>
     </div>
     <div class="activity-list">
       <div class="activity-item" *ngFor="let invoice of recentInvoices">
@@ -120,13 +118,13 @@
         <div class="activity-details">
           <div class="activity-title">{{ invoice.vendor }}</div>
           <div class="activity-meta">
-            <span>{{ invoice.items }} items added</span>
+            <span>{{ invoice.items }} {{ t.itemsAdded }}</span>
             <span class="status-badge">{{ invoice.status }}</span>
           </div>
         </div>
       </div>
       <div *ngIf="recentInvoices.length === 0" style="text-align: center; padding: 20px; color: #71717a;">
-        <p>No recent activity</p>
+        <p>{{ t.noRecentActivity }}</p>
       </div>
     </div>
   </div>
@@ -135,18 +133,18 @@
 <nav>
   <a class="nav-item" routerLink="/home" routerLinkActive="active">
     <iconify-icon icon="lucide:layout-dashboard" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Home</div>
+    <div class="nav-label">{{ t.home }}</div>
   </a>
   <a class="nav-item" routerLink="/inventory" routerLinkActive="active">
     <iconify-icon icon="lucide:package-search" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Inventory</div>
+    <div class="nav-label">{{ t.inventory }}</div>
   </a>
   <a class="nav-item" routerLink="/reports" routerLinkActive="active">
     <iconify-icon icon="lucide:file-text" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Reports</div>
+    <div class="nav-label">{{ t.reports }}</div>
   </a>
   <a class="nav-item" routerLink="/settings" routerLinkActive="active">
     <iconify-icon icon="lucide:settings" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Settings</div>
+    <div class="nav-label">{{ t.settings }}</div>
   </a>
 </nav>

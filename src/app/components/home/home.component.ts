@@ -4,6 +4,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { DashboardService, DashboardStats, Product, Invoice } from '../../services/dashboard.service';
 import { ToastService } from '../../services/toast.service';
 import { AuthService } from '../../services/auth.service';
+import { TranslationService, Translations } from '../../services/translation.service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit {
   shopName = 'My Shop';
   showNotifications = false;
   showLogoutConfirm = false;
+  t: Translations;
   notifications = [
     { id: 1, title: 'Low Stock Alert', message: 'Product A is running low', time: '2 min ago', read: false },
     { id: 2, title: 'Invoice Scanned', message: 'New invoice processed successfully', time: '1 hour ago', read: true }
@@ -29,10 +31,14 @@ export class HomeComponent implements OnInit {
     private dashboardService: DashboardService,
     private router: Router,
     private toastService: ToastService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private translationService: TranslationService
+  ) {
+    this.t = this.translationService.current;
+  }
 
   ngOnInit() {
+    this.translationService.t$.subscribe(t => this.t = t);
     this.loadUserData();
     this.loadDashboardData();
   }
@@ -45,52 +51,22 @@ export class HomeComponent implements OnInit {
   loadDashboardData() {
     this.dashboardService.getStats().subscribe({
       next: (data) => this.stats = data,
-      error: (err) => {
-        console.error('Error loading stats:', err);
-        this.toastService.error('Failed to load dashboard stats');
-      }
+      error: (err) => { console.error(err); this.toastService.error('Failed to load dashboard stats'); }
     });
-
     this.dashboardService.getLowStockProducts().subscribe({
       next: (data) => this.lowStockProducts = data.slice(0, 2),
-      error: (err) => {
-        console.error('Error loading low stock products:', err);
-        this.toastService.error('Failed to load low stock products');
-      }
+      error: (err) => { console.error(err); this.toastService.error('Failed to load low stock products'); }
     });
-
     this.dashboardService.getRecentInvoices().subscribe({
       next: (data) => this.recentInvoices = data.slice(0, 2),
-      error: (err) => {
-        console.error('Error loading invoices:', err);
-        this.toastService.error('Failed to load recent invoices');
-      }
+      error: (err) => { console.error(err); this.toastService.error('Failed to load recent invoices'); }
     });
   }
 
-  navigateTo(route: string) {
-    this.router.navigate([route]);
-  }
-
-  toggleNotifications() {
-    this.showNotifications = !this.showNotifications;
-  }
-
-  logout() {
-    this.showLogoutConfirm = true;
-  }
-
-  confirmLogout() {
-    this.showLogoutConfirm = false;
-    this.toastService.success('Logged out successfully');
-    this.authService.logout();
-  }
-
-  cancelLogout() {
-    this.showLogoutConfirm = false;
-  }
-
-  get unreadCount() {
-    return this.notifications.filter(n => !n.read).length;
-  }
+  navigateTo(route: string) { this.router.navigate([route]); }
+  toggleNotifications() { this.showNotifications = !this.showNotifications; }
+  logout() { this.showLogoutConfirm = true; }
+  confirmLogout() { this.showLogoutConfirm = false; this.toastService.success('Logged out successfully'); this.authService.logout(); }
+  cancelLogout() { this.showLogoutConfirm = false; }
+  get unreadCount() { return this.notifications.filter(n => !n.read).length; }
 }

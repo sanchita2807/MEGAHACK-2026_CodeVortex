@@ -18,7 +18,7 @@ export class LoginComponent {
   email = '';
   password = '';
   errorMessage = '';
-  loading = false;
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -28,7 +28,7 @@ export class LoginComponent {
 
   onSubmit() {
     this.errorMessage = '';
-    this.loading = true;
+    this.isLoading = true;
     
     const loginData = {
       email: this.email,
@@ -37,7 +37,6 @@ export class LoginComponent {
 
     this.http.post(`${environment.apiUrl}/auth/login-user`, loginData).subscribe({
       next: (response: any) => {
-        this.loading = false;
         console.log('User login response:', response);
         
         if (response.success) {
@@ -49,12 +48,13 @@ export class LoginComponent {
           localStorage.setItem('shopName', response.shopName || '');
           this.router.navigate(['/home']);
         } else {
+          this.isLoading = false;
           this.errorMessage = response.message || 'Login failed';
           this.toastService.error(this.errorMessage);
         }
       },
       error: (error) => {
-        this.loading = false;
+        this.isLoading = false;
         console.error('Login error:', error);
         
         if (error.status === 403) {

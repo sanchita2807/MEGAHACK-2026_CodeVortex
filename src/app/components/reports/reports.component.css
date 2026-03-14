@@ -44,6 +44,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  background-color: var(--background);
 }
 
 .section-header {

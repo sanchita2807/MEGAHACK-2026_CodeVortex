@@ -1,119 +1,85 @@
-<div class="export-wrapper">
-  <div class="mobile-container scrollable">
-    <!-- Header Section -->
-    <div class="auth-header">
-      <div class="logo-container">
-        <div class="logo-circle">
-          <iconify-icon icon="lucide:box" style="font-size: 32px; color: white"></iconify-icon>
-        </div>
-      </div>
-      <h1 class="auth-title">Create Account</h1>
-      <p class="auth-subtitle">
-        Join SmartSync to manage your shop and invoices
-      </p>
+<div class="page-wrapper">
+  <div class="card">
+
+    <div class="brand">
+      <iconify-icon icon="lucide:package-2" style="font-size: 24px; color: var(--primary)"></iconify-icon>
+      <span class="brand-name">SmartStock</span>
     </div>
 
-    <!-- Register Form -->
-    <form class="form-container" (ngSubmit)="onSubmit()" #registerForm="ngForm">
-      <div class="input-group">
-        <div class="input-field">
-          <div class="field-icon">
-            <iconify-icon icon="lucide:user" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
-          </div>
-          <input type="text" id="name" name="name" [(ngModel)]="name" required placeholder="Full Name"
-            class="input-control" />
-        </div>
+    <h1 class="title">Create account</h1>
+    <p class="subtitle">Fill in the details to get started</p>
+
+    <form class="form" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+
+      <div class="field" [class.filled]="name">
+        <iconify-icon icon="lucide:user" class="field-icon"></iconify-icon>
+        <input type="text" name="name" [(ngModel)]="name" required placeholder="Full name" class="field-input" />
       </div>
 
-      <div class="input-group">
-        <div class="input-field">
-          <div class="field-icon">
-            <iconify-icon icon="lucide:smartphone"
-              style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
-          </div>
-          <input type="tel" id="phone" name="phone" [(ngModel)]="phone" required placeholder="Phone Number"
-            class="input-control" />
-        </div>
+      <div class="field" [class.filled]="phone">
+        <iconify-icon icon="lucide:smartphone" class="field-icon"></iconify-icon>
+        <input type="tel" name="phone" [(ngModel)]="phone" required placeholder="Phone number" class="field-input" />
       </div>
 
-      <div class="input-group">
-        <div class="input-field">
-          <div class="field-icon">
-            <iconify-icon icon="lucide:mail" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
-          </div>
-          <input type="email" id="email" name="email" [(ngModel)]="email" required email placeholder="Email Address"
-            class="input-control" />
-        </div>
+      <div class="field" [class.filled]="email">
+        <iconify-icon icon="lucide:mail" class="field-icon"></iconify-icon>
+        <input type="email" name="email" [(ngModel)]="email" required email placeholder="Email address" class="field-input" />
       </div>
 
-      <div class="input-group">
-        <div class="input-field">
-          <div class="field-icon">
-            <iconify-icon icon="lucide:store" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
-          </div>
-          <input type="text" id="shopName" name="shopName" [(ngModel)]="shopName" required placeholder="Shop Name"
-            class="input-control" />
-        </div>
+      <div class="field" [class.filled]="shopName">
+        <iconify-icon icon="lucide:store" class="field-icon"></iconify-icon>
+        <input type="text" name="shopName" [(ngModel)]="shopName" required placeholder="Shop name" class="field-input" />
       </div>
 
-      <div class="input-group">
-        <div class="input-field">
-          <div class="field-icon">
-            <iconify-icon icon="lucide:briefcase"
-              style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
-          </div>
-          <select id="businessType" name="businessType" [(ngModel)]="businessType" required
-            class="input-control select-control">
-            <option value="" disabled selected>Business Type</option>
-            <option value="retail">Retail</option>
-            <option value="wholesale">Wholesale</option>
-            <option value="service">Service</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
+      <div class="field" [class.filled]="businessType">
+        <iconify-icon icon="lucide:briefcase" class="field-icon"></iconify-icon>
+        <select name="businessType" [(ngModel)]="businessType" required class="field-input select-input">
+          <option value="" disabled selected>Business type</option>
+          <option value="retail">Retail</option>
+          <option value="wholesale">Wholesale</option>
+          <option value="service">Service</option>
+          <option value="other">Other</option>
+        </select>
       </div>
 
-      <div class="input-group">
-        <div class="input-field">
-          <div class="field-icon">
-            <iconify-icon icon="lucide:lock" style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
-          </div>
-          <input type="password" id="password" name="password" [(ngModel)]="password" required placeholder="Password"
-            class="input-control" />
-        </div>
+      <div class="field" [class.filled]="password">
+        <iconify-icon icon="lucide:lock" class="field-icon"></iconify-icon>
+        <input type="password" name="password" [(ngModel)]="password" required placeholder="Password" class="field-input" />
       </div>
 
-      <div class="input-group">
-        <div class="input-field">
-          <div class="field-icon">
-            <iconify-icon icon="lucide:shield-check"
-              style="font-size: 20px; color: var(--muted-foreground)"></iconify-icon>
-          </div>
-          <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword" required
-            placeholder="Confirm Password" class="input-control" />
-        </div>
+      <div class="field" [class.filled]="confirmPassword" [class.error-field]="confirmPassword && password !== confirmPassword">
+        <iconify-icon icon="lucide:shield-check" class="field-icon"></iconify-icon>
+        <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" required placeholder="Confirm password" class="field-input" />
       </div>
 
-      <button type="submit" class="primary-btn" [disabled]="!registerForm.form.valid || password !== confirmPassword">
-        Register
+      <button type="submit" class="submit-btn" [disabled]="!registerForm.form.valid || password !== confirmPassword || isLoading">
+        <span *ngIf="!isLoading">Create Account</span>
+        <span *ngIf="isLoading" class="loading-content">
+          <span class="spinner"></span>
+          Creating account...
+        </span>
       </button>
 
-      <div class="success-message" *ngIf="successMessage">
+      <div class="success-msg" *ngIf="successMessage">
+        <iconify-icon icon="lucide:check-circle" style="font-size:15px"></iconify-icon>
         {{ successMessage }}
       </div>
 
-      <div class="error-message" *ngIf="errorMessage">
+      <div class="error-msg" *ngIf="errorMessage">
+        <iconify-icon icon="lucide:alert-circle" style="font-size:15px"></iconify-icon>
         {{ errorMessage }}
       </div>
-      <div class="error-message" *ngIf="confirmPassword && password !== confirmPassword">
+
+      <div class="error-msg" *ngIf="confirmPassword && password !== confirmPassword">
+        <iconify-icon icon="lucide:alert-circle" style="font-size:15px"></iconify-icon>
         Passwords do not match
       </div>
 
-      <div class="auth-footer">
-        <p>Already have an account? <a (click)="navigateTo('login')" class="auth-link">Login</a></p>
-      </div>
     </form>
 
-    <div class="footer-spacing"></div>
+    <div class="footer">
+      Already have an account? <span class="link" (click)="navigateTo('login')">Sign in</span>
+    </div>
+
   </div>
 </div>

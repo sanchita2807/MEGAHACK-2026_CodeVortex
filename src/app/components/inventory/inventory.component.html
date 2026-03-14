@@ -1,6 +1,6 @@
 <header>
   <div class="header-left">
-    <div class="header-title">Inventory</div>
+    <div class="header-title">{{ t.inventory }}</div>
   </div>
   <div class="header-actions">
     <div class="icon-btn notification-btn" (click)="toggleNotifications()">
@@ -17,7 +17,7 @@
   <div class="notification-overlay" (click)="toggleNotifications()"></div>
   <div class="notification-content">
     <div class="notification-header">
-      <h3>Notifications</h3>
+      <h3>{{ t.notificationsTitle }}</h3>
       <iconify-icon icon="lucide:x" (click)="toggleNotifications()" style="cursor: pointer; font-size: 20px"></iconify-icon>
     </div>
     <div class="notification-list">
@@ -33,7 +33,7 @@
       </div>
       <div *ngIf="notifications.length === 0" class="no-notifications">
         <iconify-icon icon="lucide:bell-off" style="font-size: 48px; color: #d4d4d8"></iconify-icon>
-        <p>No notifications</p>
+        <p>{{ t.noNotifications }}</p>
       </div>
     </div>
   </div>
@@ -45,11 +45,11 @@
     <div class="modal-icon">
       <iconify-icon icon="lucide:log-out" style="font-size: 48px; color: #ef4444"></iconify-icon>
     </div>
-    <h2>Logout Confirmation</h2>
-    <p>Are you sure you want to logout?</p>
+    <h2>{{ t.logoutConfirmTitle }}</h2>
+    <p>{{ t.logoutConfirmMsg }}</p>
     <div class="modal-actions">
-      <button class="btn-cancel" (click)="cancelLogout()">No</button>
-      <button class="btn-confirm" (click)="confirmLogout()">Yes</button>
+      <button class="btn-cancel" (click)="cancelLogout()">{{ t.no }}</button>
+      <button class="btn-confirm" (click)="confirmLogout()">{{ t.yes }}</button>
     </div>
   </div>
 </div>
@@ -59,20 +59,20 @@
     <div style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: var(--muted-foreground, #71717a);">
       <iconify-icon icon="lucide:search" style="font-size: 20px"></iconify-icon>
     </div>
-    <input type="text" class="search-input" placeholder="Search items, SKU, or categories..." (input)="onSearch($event)">
+    <input type="text" class="search-input" [placeholder]="t.searchPlaceholder" (input)="onSearch($event)">
     <div style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: var(--muted-foreground, #71717a); cursor: pointer;">
       <iconify-icon icon="lucide:barcode" style="font-size: 20px"></iconify-icon>
     </div>
   </div>
 
   <div class="tabs-container">
-    <div class="tab active">All Items</div>
-    <div class="tab inactive">Low Stock ({{ getLowStockCount() }})</div>
+    <div class="tab active">{{ t.allItems }}</div>
+    <div class="tab inactive">{{ t.lowStock }} ({{ getLowStockCount() }})</div>
   </div>
 
   <div class="inventory-header">
-    <div class="inventory-title">All Items</div>
-    <div class="inventory-count">{{ filteredProducts.length }} items</div>
+    <div class="inventory-title">{{ t.allItems }}</div>
+    <div class="inventory-count">{{ filteredProducts.length }} {{ t.inventory }}</div>
   </div>
 
   <div class="inventory-list">
@@ -90,13 +90,13 @@
       </div>
       <div class="item-status">
         <div class="item-price">₹{{ product.price.toFixed(2) }}</div>
-        <div class="stock-badge" [class.low]="isLowStock(product)">{{ product.stockLevel }} in stock</div>
+        <div class="stock-badge" [class.low]="isLowStock(product)">{{ product.stockLevel }} {{ t.inStock }}</div>
       </div>
     </div>
 
     <div *ngIf="filteredProducts.length === 0" style="text-align: center; padding: 40px; color: #71717a;">
       <iconify-icon icon="lucide:package-x" style="font-size: 48px; margin-bottom: 16px;"></iconify-icon>
-      <p>No products found</p>
+      <p>{{ t.noProductsFound }}</p>
     </div>
   </div>
 </main>
@@ -108,18 +108,18 @@
 <nav>
   <a class="nav-item" routerLink="/home" routerLinkActive="active">
     <iconify-icon icon="lucide:layout-dashboard" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Home</div>
+    <div class="nav-label">{{ t.home }}</div>
   </a>
   <a class="nav-item" routerLink="/inventory" routerLinkActive="active">
     <iconify-icon icon="lucide:package-search" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Inventory</div>
+    <div class="nav-label">{{ t.inventory }}</div>
   </a>
   <a class="nav-item" routerLink="/reports" routerLinkActive="active">
     <iconify-icon icon="lucide:file-text" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Reports</div>
+    <div class="nav-label">{{ t.reports }}</div>
   </a>
   <a class="nav-item" routerLink="/settings" routerLinkActive="active">
     <iconify-icon icon="lucide:settings" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Settings</div>
+    <div class="nav-label">{{ t.settings }}</div>
   </a>
 </nav>

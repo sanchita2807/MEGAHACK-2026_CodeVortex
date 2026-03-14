@@ -24,6 +24,7 @@ export class RegistrationComponent {
   confirmPassword = '';
   errorMessage = '';
   successMessage = '';
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -41,6 +42,8 @@ export class RegistrationComponent {
       return;
     }
 
+    this.isLoading = true;
+
     const registrationData = {
       name: this.name,
       email: this.email,
@@ -49,6 +52,8 @@ export class RegistrationComponent {
       businessType: this.businessType,
       password: this.password
     };
+
+    console.log('Attempting registration with:', { ...registrationData, password: '***' });
 
     this.http.post(`${environment.apiUrl}/auth/register`, registrationData).subscribe({
       next: (response: any) => {
@@ -68,8 +73,21 @@ export class RegistrationComponent {
         }, 2000);
       },
       error: (error) => {
+        this.isLoading = false;
         console.error('Registration error:', error);
-        this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+        
+        if (error.status === 0) {
+          this.errorMessage = 'Unable to connect to server. Please check your network connection and try again.';
+        } else if (error.status === 409) {
+          this.errorMessage = 'Email already exists. Please use a different email.';
+        } else if (error.status === 400) {
+          this.errorMessage = error.error?.message || 'Invalid registration data. Please check your inputs.';
+        } else if (error.status === 500) {
+          this.errorMessage = 'Server error. Please try again later.';
+        } else {
+          this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+        }
+        
         this.toastService.error(this.errorMessage);
       }
     });

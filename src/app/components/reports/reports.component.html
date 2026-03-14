@@ -1,7 +1,7 @@
 <header>
   <div class="header-left">
-    <div class="header-title">Reports</div>
-    <div class="header-subtitle">Insights &amp; Exports</div>
+    <div class="header-title">{{ t.reports }}</div>
+    <div class="header-subtitle">{{ t.exportData }}</div>
   </div>
   <div class="header-actions">
     <div class="icon-btn notification-btn" (click)="toggleNotifications()">
@@ -18,7 +18,7 @@
   <div class="notification-overlay" (click)="toggleNotifications()"></div>
   <div class="notification-content">
     <div class="notification-header">
-      <h3>Notifications</h3>
+      <h3>{{ t.notificationsTitle }}</h3>
       <iconify-icon icon="lucide:x" (click)="toggleNotifications()" style="cursor: pointer; font-size: 20px"></iconify-icon>
     </div>
     <div class="notification-list">
@@ -34,7 +34,7 @@
       </div>
       <div *ngIf="notifications.length === 0" class="no-notifications">
         <iconify-icon icon="lucide:bell-off" style="font-size: 48px; color: #d4d4d8"></iconify-icon>
-        <p>No notifications</p>
+        <p>{{ t.noNotifications }}</p>
       </div>
     </div>
   </div>
@@ -46,11 +46,11 @@
     <div class="modal-icon">
       <iconify-icon icon="lucide:log-out" style="font-size: 48px; color: #ef4444"></iconify-icon>
     </div>
-    <h2>Logout Confirmation</h2>
-    <p>Are you sure you want to logout?</p>
+    <h2>{{ t.logoutConfirmTitle }}</h2>
+    <p>{{ t.logoutConfirmMsg }}</p>
     <div class="modal-actions">
-      <button class="btn-cancel" (click)="cancelLogout()">No</button>
-      <button class="btn-confirm" (click)="confirmLogout()">Yes</button>
+      <button class="btn-cancel" (click)="cancelLogout()">{{ t.no }}</button>
+      <button class="btn-confirm" (click)="confirmLogout()">{{ t.yes }}</button>
     </div>
   </div>
 </div>
@@ -58,45 +58,43 @@
 <main>
   <div class="export-card">
     <div>
-      <div class="export-title">Export Data</div>
-      <div class="export-desc">
-        Download inventory and scan history for your accounting software.
-      </div>
+      <div class="export-title">{{ t.exportData }}</div>
+      <div class="export-desc">{{ t.exportDesc }}</div>
     </div>
     <div class="export-actions">
       <div class="btn-export btn-excel" (click)="exportToExcel()">
         <iconify-icon icon="lucide:file-spreadsheet" style="font-size: 16px"></iconify-icon>
-        Excel Format
+        {{ t.excelFormat }}
       </div>
       <div class="btn-export btn-tally" (click)="syncWithTally()">
-        <iconify-icon icon="lucify:database" style="font-size: 16px"></iconify-icon>
-        Tally Export
+        <iconify-icon icon="lucide:database" style="font-size: 16px"></iconify-icon>
+        {{ t.tallyExport }}
       </div>
     </div>
   </div>
 
   <div class="stats-grid">
     <div class="stat-card">
-      <div class="stat-label">Total Inventory Value</div>
+      <div class="stat-label">{{ t.totalInventoryValue }}</div>
       <div class="stat-value">₹ {{ stats.totalInventoryValue.toFixed(0) | number }}</div>
       <div class="stat-trend trend-up">
         <iconify-icon icon="lucide:trending-up" style="font-size: 14px"></iconify-icon>
-        {{ stats.totalItems }} items
+        {{ stats.totalItems }} {{ t.totalItems }}
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Invoices Scanned</div>
+      <div class="stat-label">{{ t.invoicesScanned }}</div>
       <div class="stat-value">{{ stats.invoicesScanned }}</div>
       <div class="stat-trend trend-up">
         <iconify-icon icon="lucide:trending-up" style="font-size: 14px"></iconify-icon>
-        {{ stats.lowStockAlerts }} low stock alerts
+        {{ stats.lowStockAlerts }} {{ t.lowStockAlerts }}
       </div>
     </div>
   </div>
 
   <div class="chart-card">
     <div class="section-header" style="margin: 0">
-      <div class="section-title">Stock Intake Trend</div>
+      <div class="section-title">{{ t.stockIntakeTrend }}</div>
     </div>
     <div class="chart-container">
       <div class="chart-bar" style="height: 40%"></div>
@@ -118,8 +116,8 @@
 
   <div class="section">
     <div class="section-header">
-      <div class="section-title">Recent Reports</div>
-      <div class="see-all">View All</div>
+      <div class="section-title">{{ t.recentReports }}</div>
+      <div class="see-all">{{ t.viewAll }}</div>
     </div>
     <div class="list">
       <div class="list-item">
@@ -147,18 +145,18 @@
 <nav>
   <a class="nav-item" routerLink="/home" routerLinkActive="active">
     <iconify-icon icon="lucide:layout-dashboard" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Home</div>
+    <div class="nav-label">{{ t.home }}</div>
   </a>
   <a class="nav-item" routerLink="/inventory" routerLinkActive="active">
     <iconify-icon icon="lucide:package-search" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Inventory</div>
+    <div class="nav-label">{{ t.inventory }}</div>
   </a>
   <a class="nav-item" routerLink="/reports" routerLinkActive="active">
     <iconify-icon icon="lucide:file-text" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Reports</div>
+    <div class="nav-label">{{ t.reports }}</div>
   </a>
   <a class="nav-item" routerLink="/settings" routerLinkActive="active">
     <iconify-icon icon="lucide:settings" style="font-size: 24px"></iconify-icon>
-    <div class="nav-label">Settings</div>
+    <div class="nav-label">{{ t.settings }}</div>
   </a>
 </nav>
